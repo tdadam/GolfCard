@@ -3,16 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 50%;
+            width: 100%;
+
+        }
+    </style>
+    <script src="../js/CourseInfo.js"></script>
 </head>
 <body>
-
+<div id="map"></div>
+<button onclick="hole(1)">Click here to test</button>
 <div id="mainContainer">
     <div id="scoreCard">
 
         <div id="topSection">
 
             <div id="holeNum">
-                <div class="sectionTitle">Hole</div>
+                <tr>Hole</tr>
+                <td></td>
 
 <!--TODO: ask if front / back / full and add hole numbers for that selection, starting with front 9 if full-->
 
@@ -57,8 +73,10 @@
     </div>
 </div>
 
+
 <script src="../js/CourseInfo.js"></script>
-<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d6385.96837743964!2d-89.77892935843306!3d43.66253277947708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sin!4v1444405955858"
-        width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7O4oZYHZ-CabyadZSFAr8gIAI1f5F_UY&signed_in=true&callback=initMap">
+</script>
 </body>
 </html>
