@@ -13,7 +13,7 @@
 
         #map {
             height: 50%;
-            width: 50%;
+            width: 100%;
 
         }
     </style>
@@ -22,10 +22,11 @@
 
 <div id="map"></div>
 <div id="demo"></div>
+<button onclick="hole(1)">Click here to test</button>
 
 <script>
     var clientID = "64f8ab8b-326b-4b4c-9d5f-10b4abf65d9c";
-    var accessToken, model;
+    var accessToken, model, map;
         var redirectURI = document.URL;
         var authUrl = "https://api.swingbyswing.com/v2/oauth/authorize?scope=read&redirect_uri=" + encodeURI(redirectURI) + "&response_type=token&client_id=" + clientID;
         accessToken = getUrlVars().access_token;
@@ -35,6 +36,7 @@
         else {
             accessToken = accessToken.replace("\n", "");
             getCourse(47500);
+
         }
 
     function getUrlVars() {
@@ -60,7 +62,7 @@
         xhttp.onreadystatechange = function() {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
                 model = JSON.parse(xhttp.responseText);
-                var location = model.course.location;
+                var location = {lat: 43.663415, lng: -89.780945};
                 initMap(location);
             }
         };
@@ -69,19 +71,63 @@
     }
 
     function initMap(myLatLng) {
-        var map = new google.maps.Map(document.getElementById('map'), {
+        console.log(myLatLng);
+        map = new google.maps.Map(document.getElementById('map'), {
             zoom: 15,
             center: myLatLng,
             mapTypeId: google.maps.MapTypeId.SATELLITE,
-            scrollwheel: false
+            scrollwheel: false,
+                    disableDefaultUI: true
+            // set bounds and center on fairway
         });
 
         var marker = new google.maps.Marker({
             position: myLatLng,
-            map: map
+            map: map,
+            title: "Cold Water Canyon"
         });
     }
 
+     function hole(hn) {
+        var green = model.course.holes[hn - 1].green_location;
+        var tee = model.course.holes[hn - 1].tee_boxes[0].location;
+        var lati = (green.lat + tee.lat) / 2;
+         console.log(lati);
+        var long = (green.lng + tee.lng) / 2;
+         console.log(long);
+        var fairway = {"lat": lati, "lng": long};
+         console.log(fairway);
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: fairway,
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.SATELLITE,
+            scrollwheel: false,
+            disableDefaultUI: true
+        });
+
+         var markTee = new google.maps.Marker({
+             position: tee,
+             map: map,
+             title: "Tee Box"
+         });
+
+         var markGreen = new google.maps.Marker({
+            position: green,
+             map: map,
+             title: "Green"
+         });
+
+//         var bounds =
+    }
+
+
+//    function check(hn) {
+//        var green = model.course.holes[hn - 1].green_location;
+//        console.log(green);
+//
+//        var tee = model.course.holes[hn - 1].tee_boxes[0].location;
+//        console.log(tee);
+//    }
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7O4oZYHZ-CabyadZSFAr8gIAI1f5F_UY&signed_in=true&callback=initMap"></script>
