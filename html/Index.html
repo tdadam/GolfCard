@@ -15,52 +15,207 @@
             width: 100%;
 
         }
+        #myTable {
+            width: 98%;
+            border: solid 2pt black;
+            border-collapse: collapse;
+            margin: 10px auto;
+        }
+        tr td {
+            border: solid 2pt black;
+        }
+        #blackTee td {
+            background-color: black;
+            color: white;
+        }
+        #blueTee td {
+            background-color: blue;
+            color: white;
+        }
+        #whiteTee td {
+            background-color: white;
+            /*color: white*/
+        }
+        #redTee td {
+            background-color: red;
+            color: white;
+        }
     </style>
     <script src="../js/CourseInfo.js"></script>
 </head>
 <body>
 <div id="map"></div>
-<button onclick="hole(1)">Click here to test</button>
+<!--<button onclick="hole(1)">Click here to test</button>-->
+<!--<button onclick="getYard()">Click here to test yard</button>-->
+
+
 <div id="mainContainer">
     <div id="scoreCard">
 
-        <div id="topSection">
+        <table id="myTable">
 
-            <div id="holeNum">
-                <tr>Hole</tr>
+            <tr id="holeNum">
+                <td class="rowTitle">Hole:</td>
+                <td id="holeSpot1" class="frontNine">1</td>
+                <td id="holeSpot2" class="frontNine">2</td>
+                <td id="holeSpot3" class="frontNine">3</td>
+                <td id="holeSpot4" class="frontNine">4</td>
+                <td id="holeSpot5" class="frontNine">5</td>
+                <td id="holeSpot6" class="frontNine">6</td>
+                <td id="holeSpot7" class="frontNine">7</td>
+                <td id="holeSpot8" class="frontNine">8</td>
+                <td id="holeSpot9" class="frontNine">9</td>
+                <td id="frontNineTotal"  class="frontNine">Out</td>
+                <td id="holeSpot10" class="backNine">10</td>
+                <td id="holeSpot11" class="backNine">11</td>
+                <td id="holeSpot12" class="backNine">12</td>
+                <td id="holeSpot13" class="backNine">13</td>
+                <td id="holeSpot14" class="backNine">14</td>
+                <td id="holeSpot15" class="backNine">15</td>
+                <td id="holeSpot16" class="backNine">16</td>
+                <td id="holeSpot17" class="backNine">17</td>
+                <td id="holeSpot18" class="backNine">18</td>
+                <td id="backNineTotal" class="backNine">In</td>
+                <td id="scoreTotal">Total</td>
+                <td id="overUnder">+ / -</td>
+                </tr>
+            <tr id="blackTee">
+<td>Pro</td>
+
+                <td id="blackYard1" class=”front9”></td>
+                <td id="blackYard2" class=”front9”></td>
+                <td id="blackYard3" class=”front9”></td>
+                <td id="blackYard4" class=”front9”></td>
+                <td id="blackYard5" class=”front9”></td>
+                <td id="blackYard6" class=”front9”></td>
+                <td id="blackYard7" class=”front9”></td>
+                <td id="blackYard8" class=”front9”></td>
+                <td id="blackYard9" class=”front9”></td>
+                <td id="blackYardF9"></td>
+                <td id="blackYard10" class=”back9”></td>
+                <td id="blackYard11" class=”back9”></td>
+                <td id="blackYard12" class=”back9”></td>
+                <td id="blackYard13" class=”back9”></td>
+                <td id="blackYard14" class=”back9”></td>
+                <td id="blackYard15" class=”back9”></td>
+                <td id="blackYard16" class=”back9”></td>
+                <td id="blackYard17" class=”back9”></td>
+                <td id="blackYard18" class=”back9”></td>
+                <td id="blackYardB9"></td>
+                <td id="blackYardTotal"></td>
                 <td></td>
+            </tr>
+            <tr id="blueTee">
+<td>Champion</td>
+                <td id="blueYard1" class=”front9”></td>
+                <td id="blueYard2" class=”front9”></td>
+                <td id="blueYard3" class=”front9”></td>
+                <td id="blueYard4" class=”front9”></td>
+                <td id="blueYard5" class=”front9”></td>
+                <td id="blueYard6" class=”front9”></td>
+                <td id="blueYard7" class=”front9”></td>
+                <td id="blueYard8" class=”front9”></td>
+                <td id="blueYard9" class=”front9”></td>
+                <td id="blueYardF9"></td>
+                <td id="blueYard10" class=”back9”></td>
+                <td id="blueYard11" class=”back9”></td>
+                <td id="blueYard12" class=”back9”></td>
+                <td id="blueYard13" class=”back9”></td>
+                <td id="blueYard14" class=”back9”></td>
+                <td id="blueYard15" class=”back9”></td>
+                <td id="blueYard16" class=”back9”></td>
+                <td id="blueYard17" class=”back9”></td>
+                <td id="blueYard18" class=”back9”></td>
+                <td id="blueYardB9"></td>
+                <td id="blueYardTotal"></td>
+                <td></td>
+            </tr>
+            <tr id="whiteTee">
+    <td>Men</td>
+                <td id="whiteYard1" class=”front9”></td>
+                <td id="whiteYard2" class=”front9”></td>
+                <td id="whiteYard3" class=”front9”></td>
+                <td id="whiteYard4" class=”front9”></td>
+                <td id="whiteYard5" class=”front9”></td>
+                <td id="whiteYard6" class=”front9”></td>
+                <td id="whiteYard7" class=”front9”></td>
+                <td id="whiteYard8" class=”front9”></td>
+                <td id="whiteYard9" class=”front9”></td>
+                <td id="whiteYardF9"></td>
+                <td id="whiteYard10" class=”back9”></td>
+                <td id="whiteYard11" class=”back9”></td>
+                <td id="whiteYard12" class=”back9”></td>
+                <td id="whiteYard13" class=”back9”></td>
+                <td id="whiteYard14" class=”back9”></td>
+                <td id="whiteYard15" class=”back9”></td>
+                <td id="whiteYard16" class=”back9”></td>
+                <td id="whiteYard17" class=”back9”></td>
+                <td id="whiteYard18" class=”back9”></td>
+                <td id="whiteYardB9"></td>
+                <td id="whiteYardTotal"></td>
+                <td></td>
+            </tr>
+            <tr id="parNum">
+                <!-- This needs to change based on the front/back 9 toggle-->
+                <td class="sectionTitle">Par</td>
+
+                <td id="par1" class="parBox frontNine">1</td>
+                <td id="par2" class="parBox frontNine">2</td>
+                <td id="par3" class="parBox frontNine">3</td>
+                <td id="par4" class="parBox frontNine">4</td>
+                <td id="par5" class="parBox frontNine">5</td>
+                <td id="par6" class="parBox frontNine">6</td>
+                <td id="par7" class="parBox frontNine">7</td>
+                <td id="par8" class="parBox frontNine">8</td>
+                <td id="par9" class="parBox frontNine">9</td>
+                <td id="parF9" class="parBox frontNine"></td>
+                <td id="par10" class="parBox backNine">10</td>
+                <td id="par11" class="parBox backNine">11</td>
+                <td id="par12" class="parBox backNine">12</td>
+                <td id="par13" class="parBox backNine">13</td>
+                <td id="par14" class="parBox backNine">14</td>
+                <td id="par15" class="parBox backNine">15</td>
+                <td id="par16" class="parBox backNine">16</td>
+                <td id="par17" class="parBox backNine">17</td>
+                <td id="par18" class="parBox backNine">18</td>
+                <td id="parB9" class="parBox backNine"></td>
+                <td id="parTotal" class="parBox"></td>
+                <td id="parOverUnder" class="parBox"></td>
+        </tr>
+
+
 
 <!--TODO: ask if front / back / full and add hole numbers for that selection, starting with front 9 if full-->
 
 
-            </div>
 
-            <div id="parNum">
-                <!-- This needs to change based on the front/back 9 toggle-->
-                <div class="sectionTitle">Par</div>
+            <tr id="redTee">
+                <td>Women</td>
+                <td id="redYard1" class=”front9”></td>
+                <td id="redYard2" class=”front9”></td>
+                <td id="redYard3" class=”front9”></td>
+                <td id="redYard4" class=”front9”></td>
+                <td id="redYard5" class=”front9”></td>
+                <td id="redYard6" class=”front9”></td>
+                <td id="redYard7" class=”front9”></td>
+                <td id="redYard8" class=”front9”></td>
+                <td id="redYard9" class=”front9”></td>
+                <td id="redYardF9"></td>
+                <td id="redYard10" class=”back9”></td>
+                <td id="redYard11" class=”back9”></td>
+                <td id="redYard12" class=”back9”></td>
+                <td id="redYard13" class=”back9”></td>
+                <td id="redYard14" class=”back9”></td>
+                <td id="redYard15" class=”back9”></td>
+                <td id="redYard16" class=”back9”></td>
+                <td id="redYard17" class=”back9”></td>
+                <td id="redYard18" class=”back9”></td>
+                <td id="redYardB9"></td>
+                <td id="redYardTotal"></td>
+                <td></td>
+            </tr>
+            </table>
 
-                <div class="parBox">1</div>
-                <div class="parBox">2</div>
-                <div class="parBox">3</div>
-                <div class="parBox">4</div>
-                <div class="parBox">5</div>
-                <div class="parBox">6</div>
-                <div class="parBox">7</div>
-                <div class="parBox">8</div>
-                <div class="parBox">9</div>
-                <div class="parBox">10</div>
-                <div class="parBox">11</div>
-                <div class="parBox">12</div>
-                <div class="parBox">13</div>
-                <div class="parBox">14</div>
-                <div class="parBox">15</div>
-                <div class="parBox">16</div>
-                <div class="parBox">17</div>
-                <div class="parBox">18</div>
-
-            </div>
-
-        </div>
 
         <div id="playerSection">
 <!--TODO: Ask number of players and enter rows for each.-->
