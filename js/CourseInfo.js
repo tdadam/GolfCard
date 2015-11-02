@@ -1,9 +1,47 @@
 var numberOfHoles = 9;
 var holeText = "";
-function setPar () {
-    for (var i=1; i<19; i++) {
+var playAdd = 0;
 
-        document.getElementById(("par" + i)).innerHTML = model.course.holes[i-1].tee_boxes[0].par;
+//$("#addPlayer").click(function(){
+//    $("table#redRow").before("<table class='Player'><tr><td>'Player Name'</td></tr></table>");
+//});
+function addPlayer() {
+    if (playAdd == 8) {
+        return;
+    }
+    else {
+        var playName = "";
+        if (playAdd < 8) {
+            playAdd++;
+            playName = prompt("Please enter Player Name: ", "player");
+        }
+        for (var i = 1; i < 9; i++)
+
+            if (playAdd == i) {
+
+                if (playName != null) {
+                    document.getElementById("player" + i + "name").innerHTML = playName;
+                }
+                return $("#player" + i).css("display", "table-row");
+            }
+    }
+}
+function removePlayer() {
+    if (playAdd > 0) {
+        playAdd--;
+    }
+    for (var i = 8; i > 0; i--)
+
+        if (playAdd == (i - 1)) {
+
+            return $("#player" + i).css("display", "none");
+        }
+}
+
+function setPar() {
+    for (var i = 1; i < 19; i++) {
+
+        document.getElementById(("par" + i)).innerHTML = model.course.holes[i - 1].tee_boxes[0].par;
 
     }
     document.getElementById("parF9").innerHTML = model.course.tee_types[0].front_nine_par;
@@ -11,49 +49,65 @@ function setPar () {
     document.getElementById("parTotal").innerHTML = model.course.tee_types[0].par;
 }
 
-function getYard () {
+function getYard() {
     var path = model.course.holes;
-    for (var i=0; i< path.length; i++) {
-        for (var j=0; j < (path[i].tee_boxes.length-1); j++)
-        if (path[i].tee_boxes[j].tee_color_type == "black") {
-                document.getElementById("blackYard" + (i + 1)).innerHTML = path[i].tee_boxes[j].yards;         }
-        else if (path[i].tee_boxes[j].tee_color_type == "white") {
-            document.getElementById("whiteYard" + (i + 1)).innerHTML = path[i].tee_boxes[j].yards;
-        }
-        else if (path[i].tee_boxes[j].tee_color_type == "blue") {
-            document.getElementById("blueYard" + (i + 1)).innerHTML = path[i].tee_boxes[j].yards;
-        }
-        else if (path[i].tee_boxes[j].tee_color_type == "red") {
-            document.getElementById("redYard" + (i + 1)).innerHTML = path[i].tee_boxes[j].yards;
-        }
-        }
-}
-function getYardTotals () {
-    var path = model.course.tee_types;
-    for (var i=0; i< path.length; i++) {
-        if (path[i].tee_color_type == "black") {
-                document.getElementById("blackYardF9").innerHTML = path[i].front_nine_yards;
-                document.getElementById("blackYardB9").innerHTML = path[i].back_nine_yards;
-                document.getElementById("blackYardTotal").innerHTML = path[i].yards;
-        }
-            else if (path[i].tee_color_type == "white") {
-                document.getElementById("whiteYardF9").innerHTML = path[i].front_nine_yards;
-                document.getElementById("whiteYardB9").innerHTML = path[i].back_nine_yards;
-                document.getElementById("whiteYardTotal").innerHTML = path[i].yards;
+    for (var i = 0; i < path.length; i++) {
+        for (var j = 0; j < (path[i].tee_boxes.length - 1); j++)
+            if (path[i].tee_boxes[j].tee_color_type == "black") {
+                document.getElementById("blackYard" + (i + 1)).innerHTML = path[i].tee_boxes[j].yards;
             }
-            else if (path[i].tee_color_type == "blue") {
-                document.getElementById("blueYardF9").innerHTML = path[i].front_nine_yards;
-                document.getElementById("blueYardB9").innerHTML = path[i].back_nine_yards;
-                document.getElementById("blueYardTotal").innerHTML = path[i].yards;
+            else if (path[i].tee_boxes[j].tee_color_type == "white") {
+                document.getElementById("whiteYard" + (i + 1)).innerHTML = path[i].tee_boxes[j].yards;
             }
-            else if (path[i].tee_color_type == "red") {
-                document.getElementById("redYardF9").innerHTML = path[i].front_nine_yards;
-                document.getElementById("redYardB9").innerHTML = path[i].back_nine_yards;
-                document.getElementById("redYardTotal").innerHTML = path[i].yards;
+            else if (path[i].tee_boxes[j].tee_color_type == "blue") {
+                document.getElementById("blueYard" + (i + 1)).innerHTML = path[i].tee_boxes[j].yards;
+            }
+            else if (path[i].tee_boxes[j].tee_color_type == "red") {
+                document.getElementById("redYard" + (i + 1)).innerHTML = path[i].tee_boxes[j].yards;
             }
     }
-}
+    if (document.getElementById("blackYard1").innerHTML == "") {
+        $("#blackTee").css("display", "none");
 
+    }
+    if (document.getElementById("blueYard1").innerHTML == "") {
+        $("#blueTee").css("display", "none");
+
+    }
+    if (document.getElementById("whiteYard1").innerHTML == "") {
+        $("#whiteTee").css("display", "none");
+
+    }
+    if (document.getElementById("redYard1").innerHTML == "") {
+        $("#redTee").css("display", "none");
+
+    }
+}
+function getYardTotals() {
+    var path = model.course.tee_types;
+    for (var i = 0; i < path.length; i++) {
+        if (path[i].tee_color_type == "black") {
+            document.getElementById("blackYardF9").innerHTML = path[i].front_nine_yards;
+            document.getElementById("blackYardB9").innerHTML = path[i].back_nine_yards;
+            document.getElementById("blackYardTotal").innerHTML = path[i].yards;
+        }
+        else if (path[i].tee_color_type == "white") {
+            document.getElementById("whiteYardF9").innerHTML = path[i].front_nine_yards;
+            document.getElementById("whiteYardB9").innerHTML = path[i].back_nine_yards;
+            document.getElementById("whiteYardTotal").innerHTML = path[i].yards;
+        }
+        else if (path[i].tee_color_type == "blue") {
+            document.getElementById("blueYardF9").innerHTML = path[i].front_nine_yards;
+            document.getElementById("blueYardB9").innerHTML = path[i].back_nine_yards;
+            document.getElementById("blueYardTotal").innerHTML = path[i].yards;
+        }
+        else if (path[i].tee_color_type == "red") {
+            document.getElementById("redYardF9").innerHTML = path[i].front_nine_yards;
+            document.getElementById("redYardB9").innerHTML = path[i].back_nine_yards;
+            document.getElementById("redYardTotal").innerHTML = path[i].yards;
+        }
+    }
+}
 
 
 //Prompt: Player names, tee, front/back/full   --- transfer to bootstrap
@@ -110,11 +164,12 @@ function Map() {
 function getCourse(courseID) {
     var xhttp = new XMLHttpRequest();
     var aRequest = "https://api.swingbyswing.com/v2/courses/" + courseID + "?includes=practice_area&access_token=" + accessToken;
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             model = JSON.parse(xhttp.responseText);
             var location = {lat: 43.663415, lng: -89.780945};
             initMap(location);
+            document.getElementById("courseName").innerHTML = model.course.name + " Golf Course";
             setPar();
             getYard();
             getYardTotals();
@@ -154,21 +209,21 @@ function hole(hn) {
         scrollwheel: false,
         disableDefaultUI: true
     });
-var teeMarker = {
-    url: '../images/red_tee.png',
-    scaledSize: new google.maps.Size(22, 32),
-    origin: new google.maps.Point(0,0)
-};
+    var teeMarker = {
+        url: '../images/red_tee.png',
+        scaledSize: new google.maps.Size(22, 32),
+        origin: new google.maps.Point(0, 0)
+    };
     var markTee = new google.maps.Marker({
         position: tee,
         map: map,
         title: "Tee Box",
         icon: teeMarker
     });
-var greenMarker = {
-    url: '../images/icon-flag.png',
-    anchor: new google.maps.Point(3, 30)
-};
+    var greenMarker = {
+        url: '../images/icon-flag.png',
+        anchor: new google.maps.Point(3, 30)
+    };
     var markGreen = new google.maps.Marker({
         position: green,
         map: map,

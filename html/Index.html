@@ -3,56 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            height: 50%;
-            width: 100%;
-
-        }
-        #myTable {
-            width: 98%;
-            border: solid 2pt black;
-            border-collapse: collapse;
-            margin: 10px auto;
-        }
-        tr td {
-            border: solid 2pt black;
-        }
-        #blackTee td {
-            background-color: black;
-            color: white;
-        }
-        #blueTee td {
-            background-color: blue;
-            color: white;
-        }
-        #whiteTee td {
-            background-color: white;
-            /*color: white*/
-        }
-        #redTee td {
-            background-color: red;
-            color: white;
-        }
-    </style>
+    <link href="Style.css" rel="stylesheet"/>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="../js/CourseInfo.js"></script>
 </head>
 <body>
+<div id="courseName"></div>
 <div id="map"></div>
-<!--<button onclick="hole(1)">Click here to test</button>-->
+<button onclick="addPlayer()">Add Player (max 8)</button>
+<button onclick="removePlayer()">Remove Player</button>
 <!--<button onclick="getYard()">Click here to test yard</button>-->
 
 
 <div id="mainContainer">
     <div id="scoreCard">
 
-        <table id="myTable">
+        <table id="headTable">
 
             <tr id="holeNum">
                 <td class="rowTitle">Hole:</td>
@@ -65,7 +32,7 @@
                 <td id="holeSpot7" class="frontNine">7</td>
                 <td id="holeSpot8" class="frontNine">8</td>
                 <td id="holeSpot9" class="frontNine">9</td>
-                <td id="frontNineTotal"  class="frontNine">Out</td>
+                <td id="frontNineTotal" class="frontNine">Out</td>
                 <td id="holeSpot10" class="backNine">10</td>
                 <td id="holeSpot11" class="backNine">11</td>
                 <td id="holeSpot12" class="backNine">12</td>
@@ -78,9 +45,9 @@
                 <td id="backNineTotal" class="backNine">In</td>
                 <td id="scoreTotal">Total</td>
                 <td id="overUnder">+ / -</td>
-                </tr>
+            </tr>
             <tr id="blackTee">
-<td>Pro</td>
+                <td>Pro:</td>
 
                 <td id="blackYard1" class=”front9”></td>
                 <td id="blackYard2" class=”front9”></td>
@@ -106,7 +73,7 @@
                 <td></td>
             </tr>
             <tr id="blueTee">
-<td>Champion</td>
+                <td>Champion:</td>
                 <td id="blueYard1" class=”front9”></td>
                 <td id="blueYard2" class=”front9”></td>
                 <td id="blueYard3" class=”front9”></td>
@@ -131,7 +98,7 @@
                 <td></td>
             </tr>
             <tr id="whiteTee">
-    <td>Men</td>
+                <td>Men:</td>
                 <td id="whiteYard1" class=”front9”></td>
                 <td id="whiteYard2" class=”front9”></td>
                 <td id="whiteYard3" class=”front9”></td>
@@ -157,40 +124,239 @@
             </tr>
             <tr id="parNum">
                 <!-- This needs to change based on the front/back 9 toggle-->
-                <td class="sectionTitle">Par</td>
+                <td class="sectionTitle">Par:</td>
 
-                <td id="par1" class="parBox frontNine">1</td>
-                <td id="par2" class="parBox frontNine">2</td>
-                <td id="par3" class="parBox frontNine">3</td>
-                <td id="par4" class="parBox frontNine">4</td>
-                <td id="par5" class="parBox frontNine">5</td>
-                <td id="par6" class="parBox frontNine">6</td>
-                <td id="par7" class="parBox frontNine">7</td>
-                <td id="par8" class="parBox frontNine">8</td>
-                <td id="par9" class="parBox frontNine">9</td>
-                <td id="parF9" class="parBox frontNine"></td>
-                <td id="par10" class="parBox backNine">10</td>
-                <td id="par11" class="parBox backNine">11</td>
-                <td id="par12" class="parBox backNine">12</td>
-                <td id="par13" class="parBox backNine">13</td>
-                <td id="par14" class="parBox backNine">14</td>
-                <td id="par15" class="parBox backNine">15</td>
-                <td id="par16" class="parBox backNine">16</td>
-                <td id="par17" class="parBox backNine">17</td>
-                <td id="par18" class="parBox backNine">18</td>
-                <td id="parB9" class="parBox backNine"></td>
-                <td id="parTotal" class="parBox"></td>
-                <td id="parOverUnder" class="parBox"></td>
-        </tr>
+                <td id="par1" class="frontNine"></td>
+                <td id="par2" class="frontNine"></td>
+                <td id="par3" class="frontNine"></td>
+                <td id="par4" class="frontNine"></td>
+                <td id="par5" class="frontNine"></td>
+                <td id="par6" class="frontNine"></td>
+                <td id="par7" class="frontNine"></td>
+                <td id="par8" class="frontNine"></td>
+                <td id="par9" class="frontNine"></td>
+                <td id="parF9" class="frontNine"></td>
+                <td id="par10" class="backNine"></td>
+                <td id="par11" class="backNine"></td>
+                <td id="par12" class="backNine"></td>
+                <td id="par13" class="backNine"></td>
+                <td id="par14" class="backNine"></td>
+                <td id="par15" class="backNine"></td>
+                <td id="par16" class="backNine"></td>
+                <td id="par17" class="backNine"></td>
+                <td id="par18" class="backNine"></td>
+                <td id="parB9" class="backNine"></td>
+                <td id="parTotal"></td>
+                <td id="parOverUnder"></td>
+            </tr>
+            <tr id="player1">
+                <td id="player1name">Play1</td>
+
+                <td id="play11" class="frontNine">1</td>
+                <td id="play12" class="frontNine">2</td>
+                <td id="play13" class="frontNine">3</td>
+                <td id="play14" class="frontNine">4</td>
+                <td id="play15" class="frontNine">5</td>
+                <td id="play16" class="frontNine">6</td>
+                <td id="play17" class="frontNine">7</td>
+                <td id="play18" class="frontNine">8</td>
+                <td id="play19" class="frontNine">9</td>
+                <td id="play1F9" class="frontNine">10</td>
+                <td id="play110" class="backNine">11</td>
+                <td id="play111" class="backNine">12</td>
+                <td id="play112" class="backNine">13</td>
+                <td id="play113" class="backNine">14</td>
+                <td id="play114" class="backNine">15</td>
+                <td id="play115" class="backNine">16</td>
+                <td id="play116" class="backNine">17</td>
+                <td id="play117" class="backNine">18</td>
+                <td id="play118" class="backNine">19</td>
+                <td id="play1B9" class="backNine">20</td>
+                <td id="play1Total">21</td>
+                <td id="play1OverUnder">22</td>
+            </tr>
+            <tr id="player2">
+                <td id="player2name">Play2</td>
+                <td id="play21" class="frontNine">1</td>
+                <td id="play22" class="frontNine">2</td>
+                <td id="play23" class="frontNine">3</td>
+                <td id="play24" class="frontNine">4</td>
+                <td id="play25" class="frontNine">5</td>
+                <td id="play26" class="frontNine">6</td>
+                <td id="play27" class="frontNine">7</td>
+                <td id="play28" class="frontNine">8</td>
+                <td id="play29" class="frontNine">9</td>
+                <td id="play2F9" class="frontNine">10</td>
+                <td id="play210" class="backNine">11</td>
+                <td id="play211" class="backNine">12</td>
+                <td id="play212" class="backNine">13</td>
+                <td id="play213" class="backNine">14</td>
+                <td id="play214" class="backNine">15</td>
+                <td id="play215" class="backNine">16</td>
+                <td id="play216" class="backNine">17</td>
+                <td id="play217" class="backNine">18</td>
+                <td id="play218" class="backNine">19</td>
+                <td id="play2B9" class="backNine">20</td>
+                <td id="play2Total">21</td>
+                <td id="play2OverUnder">22</td>
+            </tr>
+            <tr id="player3">
+                <td id="player3name">Play3</td>
+                <td id="play31" class="frontNine">1</td>
+                <td id="play32" class="frontNine">2</td>
+                <td id="play33" class="frontNine">3</td>
+                <td id="play34" class="frontNine">4</td>
+                <td id="play35" class="frontNine">5</td>
+                <td id="play36" class="frontNine">6</td>
+                <td id="play37" class="frontNine">7</td>
+                <td id="play38" class="frontNine">8</td>
+                <td id="play39" class="frontNine">9</td>
+                <td id="play3F9" class="frontNine">10</td>
+                <td id="play310" class="backNine">11</td>
+                <td id="play311" class="backNine">12</td>
+                <td id="play312" class="backNine">13</td>
+                <td id="play313" class="backNine">14</td>
+                <td id="play314" class="backNine">15</td>
+                <td id="play315" class="backNine">16</td>
+                <td id="play316" class="backNine">17</td>
+                <td id="play317" class="backNine">18</td>
+                <td id="play318" class="backNine">19</td>
+                <td id="play3B9" class="backNine">20</td>
+                <td id="play3Total">21</td>
+                <td id="play3OverUnder">22</td>
+            </tr>
+            <tr id="player4">
+                <td id="player4name">Play4</td>
+                <td id="play41" class="frontNine">1</td>
+                <td id="play42" class="frontNine">2</td>
+                <td id="play43" class="frontNine">3</td>
+                <td id="play44" class="frontNine">4</td>
+                <td id="play45" class="frontNine">5</td>
+                <td id="play46" class="frontNine">6</td>
+                <td id="play47" class="frontNine">7</td>
+                <td id="play48" class="frontNine">8</td>
+                <td id="play49" class="frontNine">9</td>
+                <td id="play4F9" class="frontNine">10</td>
+                <td id="play410" class="backNine">11</td>
+                <td id="play411" class="backNine">12</td>
+                <td id="play412" class="backNine">13</td>
+                <td id="play413" class="backNine">14</td>
+                <td id="play414" class="backNine">15</td>
+                <td id="play415" class="backNine">16</td>
+                <td id="play416" class="backNine">17</td>
+                <td id="play417" class="backNine">18</td>
+                <td id="play418" class="backNine">19</td>
+                <td id="play4B9" class="backNine">20</td>
+                <td id="play4Total">21</td>
+                <td id="play4OverUnder">22</td>
+            </tr>
+            <tr id="player5">
+                <td id="player5name">Play5</td>
+                <td id="play51" class="frontNine">1</td>
+                <td id="play52" class="frontNine">2</td>
+                <td id="play53" class="frontNine">3</td>
+                <td id="play54" class="frontNine">4</td>
+                <td id="play55" class="frontNine">5</td>
+                <td id="play56" class="frontNine">6</td>
+                <td id="play57" class="frontNine">7</td>
+                <td id="play58" class="frontNine">8</td>
+                <td id="play59" class="frontNine">9</td>
+                <td id="play5F9" class="frontNine">10</td>
+                <td id="play510" class="backNine">11</td>
+                <td id="play511" class="backNine">12</td>
+                <td id="play512" class="backNine">13</td>
+                <td id="play513" class="backNine">14</td>
+                <td id="play514" class="backNine">15</td>
+                <td id="play515" class="backNine">16</td>
+                <td id="play516" class="backNine">17</td>
+                <td id="play517" class="backNine">18</td>
+                <td id="play518" class="backNine">19</td>
+                <td id="play5B9" class="backNine">20</td>
+                <td id="play5Total">21</td>
+                <td id="play5OverUnder">22</td>
+            </tr>
+            <tr id="player6">
+                <td id="player6name">Play6</td>
+                <td id="play61" class="frontNine">1</td>
+                <td id="play62" class="frontNine">2</td>
+                <td id="play63" class="frontNine">3</td>
+                <td id="play64" class="frontNine">4</td>
+                <td id="play65" class="frontNine">5</td>
+                <td id="play66" class="frontNine">6</td>
+                <td id="play67" class="frontNine">7</td>
+                <td id="play68" class="frontNine">8</td>
+                <td id="play69" class="frontNine">9</td>
+                <td id="play6F9" class="frontNine">10</td>
+                <td id="play610" class="backNine">11</td>
+                <td id="play611" class="backNine">12</td>
+                <td id="play612" class="backNine">13</td>
+                <td id="play613" class="backNine">14</td>
+                <td id="play614" class="backNine">15</td>
+                <td id="play615" class="backNine">16</td>
+                <td id="play616" class="backNine">17</td>
+                <td id="play617" class="backNine">18</td>
+                <td id="play618" class="backNine">19</td>
+                <td id="play6B9" class="backNine">20</td>
+                <td id="play6Total">21</td>
+                <td id="play6OverUnder">22</td>
+            </tr>
+            <tr id="player7">
+                <td id="player7name">Play7</td>
+                <td id="play71" class="frontNine">1</td>
+                <td id="play72" class="frontNine">2</td>
+                <td id="play73" class="frontNine">3</td>
+                <td id="play74" class="frontNine">4</td>
+                <td id="play75" class="frontNine">5</td>
+                <td id="play76" class="frontNine">6</td>
+                <td id="play77" class="frontNine">7</td>
+                <td id="play78" class="frontNine">8</td>
+                <td id="play79" class="frontNine">9</td>
+                <td id="play7F9" class="frontNine">10</td>
+                <td id="play710" class="backNine">11</td>
+                <td id="play711" class="backNine">12</td>
+                <td id="play712" class="backNine">13</td>
+                <td id="play713" class="backNine">14</td>
+                <td id="play714" class="backNine">15</td>
+                <td id="play715" class="backNine">16</td>
+                <td id="play716" class="backNine">17</td>
+                <td id="play717" class="backNine">18</td>
+                <td id="play718" class="backNine">19</td>
+                <td id="play7B9" class="backNine">20</td>
+                <td id="play7Total">21</td>
+                <td id="play7OverUnder">22</td>
+            </tr>
+            <tr id="player8">
+                <td id="player8name">Play8</td>
+                <td id="play81" class="frontNine">1</td>
+                <td id="play82" class="frontNine">2</td>
+                <td id="play83" class="frontNine">3</td>
+                <td id="play84" class="frontNine">4</td>
+                <td id="play85" class="frontNine">5</td>
+                <td id="play86" class="frontNine">6</td>
+                <td id="play87" class="frontNine">7</td>
+                <td id="play88" class="frontNine">8</td>
+                <td id="play89" class="frontNine">9</td>
+                <td id="play8F9" class="frontNine">10</td>
+                <td id="play810" class="backNine">11</td>
+                <td id="play811" class="backNine">12</td>
+                <td id="play812" class="backNine">13</td>
+                <td id="play813" class="backNine">14</td>
+                <td id="play814" class="backNine">15</td>
+                <td id="play815" class="backNine">16</td>
+                <td id="play816" class="backNine">17</td>
+                <td id="play817" class="backNine">18</td>
+                <td id="play818" class="backNine">19</td>
+                <td id="play8B9" class="backNine">20</td>
+                <td id="play8Total">21</td>
+                <td id="play8OverUnder">22</td>
+            </tr>
 
 
-
-<!--TODO: ask if front / back / full and add hole numbers for that selection, starting with front 9 if full-->
-
+            <!--TODO: ask if front / back / full and add hole numbers for that selection, starting with front 9 if full-->
 
 
             <tr id="redTee">
-                <td>Women</td>
+                <td>Women:</td>
                 <td id="redYard1" class=”front9”></td>
                 <td id="redYard2" class=”front9”></td>
                 <td id="redYard3" class=”front9”></td>
@@ -214,11 +380,11 @@
                 <td id="redYardTotal"></td>
                 <td></td>
             </tr>
-            </table>
+        </table>
 
 
         <div id="playerSection">
-<!--TODO: Ask number of players and enter rows for each.-->
+            <!--TODO: Ask number of players and enter rows for each.-->
             <div class="playerRow"></div>
             <div class="playerRow"></div>
             <div class="playerRow"></div>

@@ -1,0 +1,97 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#courseName {
+    text-align: center;
+}
+
+#map {
+    height: 50%;
+    width: 100%;
+
+}
+
+table {
+    width: 98%;
+    border-collapse: collapse;
+    margin: auto;
+    border-bottom: solid 2pt black;
+    border-left: solid 2pt black;
+    border-right: solid 2pt black;
+}
+
+#headTable {
+    border-top: solid 2pt black;
+    margin: 10px auto 0 auto;
+}
+
+#redTee {
+    margin: 0 auto 10px auto
+}
+
+tr td {
+    border: solid 2pt black;
+}
+
+#blackTee td {
+    background-color: black;
+    color: white;
+}
+
+#blueTee td {
+    background-color: blue;
+    color: white;
+}
+
+#whiteTee td {
+    background-color: white;
+    /*color: white*/
+}
+
+#redTee td {
+    background-color: red;
+    color: white;
+}
+
+#parNum {
+    background-color: cornsilk;
+}
+
+#player1 {
+    display: none;
+}
+
+#player2 {
+    display: none;
+    background-color: azure;
+}
+
+#player3 {
+    display: none;
+}
+
+#player4 {
+    display: none;
+    background-color: azure;
+}
+
+#player5 {
+    display: none;
+}
+
+#player6 {
+    display: none;
+    background-color: azure;
+}
+
+#player7 {
+    display: none;
+}
+
+#player8 {
+    display: none;
+    background-color: azure;
+}
