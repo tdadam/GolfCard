@@ -3,18 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link href="Style.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+          integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
+          integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+            integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
+            crossorigin="anonymous"></script>
     <script src="../js/CourseInfo.js"></script>
+    <link href="Style.css" rel="stylesheet"/>
 </head>
 <body>
+<!-- Button trigger modal -->
+
 <div id="courseName"></div>
 <div id="map"></div>
-<button onclick="addPlayer()">Add Player (max 8)</button>
-<button onclick="removePlayer()">Remove Player</button>
-<!--<button onclick="getYard()">Click here to test yard</button>-->
 
+<div class="modal fade" id="setupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title myModalLabel">Setup Golf Round:</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row myModalInfo">
+
+                    <button type="button" class="btn btn-primary col-md-3" onclick="setFull()">Full</button>
+                    <button type="button" class="btn btn-primary col-md-3" onclick="setFrontNine()">Front Nine</button>
+                    <button type="button" class="btn btn-primary col-md-3" onclick="setBackNine()">Back Nine</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="playerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title myModalLabel">Select Number of Players:</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row myModalInfo">
+
+                    <button type="button" class="btn btn-primary col-md-3" onclick="addRow(1)">1</button>
+                    <button type="button" class="btn btn-primary col-md-3" onclick="addRow(2)">2</button>
+                    <button type="button" class="btn btn-primary col-md-3" onclick="addRow(3)">3</button>
+
+                </div>
+                <br>
+                <div class="row myModalInfo">
+                    <button type="button" class="btn btn-primary col-md-3" onclick="addRow(4)">4</button>
+                    <button type="button" class="btn btn-primary col-md-3" onclick="addRow(5)">5</button>
+                    <button type="button" class="btn btn-primary col-md-3" onclick="addRow(6)">6</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <div id="mainContainer">
     <div id="scoreCard">
@@ -49,76 +101,76 @@
             <tr id="blackTee">
                 <td>Pro:</td>
 
-                <td id="blackYard1" class=”front9”></td>
-                <td id="blackYard2" class=”front9”></td>
-                <td id="blackYard3" class=”front9”></td>
-                <td id="blackYard4" class=”front9”></td>
-                <td id="blackYard5" class=”front9”></td>
-                <td id="blackYard6" class=”front9”></td>
-                <td id="blackYard7" class=”front9”></td>
-                <td id="blackYard8" class=”front9”></td>
-                <td id="blackYard9" class=”front9”></td>
-                <td id="blackYardF9"></td>
-                <td id="blackYard10" class=”back9”></td>
-                <td id="blackYard11" class=”back9”></td>
-                <td id="blackYard12" class=”back9”></td>
-                <td id="blackYard13" class=”back9”></td>
-                <td id="blackYard14" class=”back9”></td>
-                <td id="blackYard15" class=”back9”></td>
-                <td id="blackYard16" class=”back9”></td>
-                <td id="blackYard17" class=”back9”></td>
-                <td id="blackYard18" class=”back9”></td>
-                <td id="blackYardB9"></td>
+                <td id="blackYard1" class="frontNine"></td>
+                <td id="blackYard2" class="frontNine"></td>
+                <td id="blackYard3" class="frontNine"></td>
+                <td id="blackYard4" class="frontNine"></td>
+                <td id="blackYard5" class="frontNine"></td>
+                <td id="blackYard6" class="frontNine"></td>
+                <td id="blackYard7" class="frontNine"></td>
+                <td id="blackYard8" class="frontNine"></td>
+                <td id="blackYard9" class="frontNine"></td>
+                <td id="blackYardF9" class="frontNine"></td>
+                <td id="blackYard10" class="backNine"></td>
+                <td id="blackYard11" class="backNine"></td>
+                <td id="blackYard12" class="backNine"></td>
+                <td id="blackYard13" class="backNine"></td>
+                <td id="blackYard14" class="backNine"></td>
+                <td id="blackYard15" class="backNine"></td>
+                <td id="blackYard16" class="backNine"></td>
+                <td id="blackYard17" class="backNine"></td>
+                <td id="blackYard18" class="backNine"></td>
+                <td id="blackYardB9" class="backNine"></td>
                 <td id="blackYardTotal"></td>
                 <td></td>
             </tr>
             <tr id="blueTee">
                 <td>Champion:</td>
-                <td id="blueYard1" class=”front9”></td>
-                <td id="blueYard2" class=”front9”></td>
-                <td id="blueYard3" class=”front9”></td>
-                <td id="blueYard4" class=”front9”></td>
-                <td id="blueYard5" class=”front9”></td>
-                <td id="blueYard6" class=”front9”></td>
-                <td id="blueYard7" class=”front9”></td>
-                <td id="blueYard8" class=”front9”></td>
-                <td id="blueYard9" class=”front9”></td>
-                <td id="blueYardF9"></td>
-                <td id="blueYard10" class=”back9”></td>
-                <td id="blueYard11" class=”back9”></td>
-                <td id="blueYard12" class=”back9”></td>
-                <td id="blueYard13" class=”back9”></td>
-                <td id="blueYard14" class=”back9”></td>
-                <td id="blueYard15" class=”back9”></td>
-                <td id="blueYard16" class=”back9”></td>
-                <td id="blueYard17" class=”back9”></td>
-                <td id="blueYard18" class=”back9”></td>
-                <td id="blueYardB9"></td>
+                <td id="blueYard1" class="frontNine"></td>
+                <td id="blueYard2" class="frontNine"></td>
+                <td id="blueYard3" class="frontNine"></td>
+                <td id="blueYard4" class="frontNine"></td>
+                <td id="blueYard5" class="frontNine"></td>
+                <td id="blueYard6" class="frontNine"></td>
+                <td id="blueYard7" class="frontNine"></td>
+                <td id="blueYard8" class="frontNine"></td>
+                <td id="blueYard9" class="frontNine"></td>
+                <td id="blueYardF9" class="frontNine"></td>
+                <td id="blueYard10" class="backNine"></td>
+                <td id="blueYard11" class="backNine"></td>
+                <td id="blueYard12" class="backNine"></td>
+                <td id="blueYard13" class="backNine"></td>
+                <td id="blueYard14" class="backNine"></td>
+                <td id="blueYard15" class="backNine"></td>
+                <td id="blueYard16" class="backNine"></td>
+                <td id="blueYard17" class="backNine"></td>
+                <td id="blueYard18" class="backNine"></td>
+                <td id="blueYardB9" class="backNine"></td>
                 <td id="blueYardTotal"></td>
                 <td></td>
             </tr>
             <tr id="whiteTee">
                 <td>Men:</td>
-                <td id="whiteYard1" class=”front9”></td>
-                <td id="whiteYard2" class=”front9”></td>
-                <td id="whiteYard3" class=”front9”></td>
-                <td id="whiteYard4" class=”front9”></td>
-                <td id="whiteYard5" class=”front9”></td>
-                <td id="whiteYard6" class=”front9”></td>
-                <td id="whiteYard7" class=”front9”></td>
-                <td id="whiteYard8" class=”front9”></td>
-                <td id="whiteYard9" class=”front9”></td>
-                <td id="whiteYardF9"></td>
-                <td id="whiteYard10" class=”back9”></td>
-                <td id="whiteYard11" class=”back9”></td>
-                <td id="whiteYard12" class=”back9”></td>
-                <td id="whiteYard13" class=”back9”></td>
-                <td id="whiteYard14" class=”back9”></td>
-                <td id="whiteYard15" class=”back9”></td>
-                <td id="whiteYard16" class=”back9”></td>
-                <td id="whiteYard17" class=”back9”></td>
-                <td id="whiteYard18" class=”back9”></td>
-                <td id="whiteYardB9"></td>
+                <td id="whiteYard1" class="frontNine"></td>
+                <td id="whiteYard2" class="frontNine"></td>
+                <td id="whiteYard3" class="frontNine"></td>
+                <td id="whiteYard4" class="frontNine"></td>
+                <td id="whiteYard5" class="frontNine"></td>
+                <td id="whiteYard6" class="frontNine"></td>
+                <td id="whiteYard7" class="frontNine"></td>
+                <td id="whiteYard8" class="frontNine"></td>
+                <td id="whiteYard9" class="frontNine"></td>
+                <td id="whiteYardF9" class="frontNine"></td>
+                <td id="whiteYard10" class="backNine"></td>
+                <td id="whiteYard11" class="backNine"></td>
+                <td id="whiteYard12" class="backNine"></td>
+                <td id="whiteYard13" class="backNine"></td>
+                <td id="whiteYard14" class="backNine"></td>
+                <td id="whiteYard15" class="backNine"></td>
+                <td id="whiteYard16" class="backNine"></td>
+                <td id="whiteYard17" class="backNine"></td>
+                <td id="whiteYard18" class="backNine"></td>
+                <td id="whiteYardB9" class="backNine"></td>
                 <td id="whiteYardTotal"></td>
                 <td></td>
             </tr>
@@ -152,7 +204,7 @@
             <tr id="player1">
                 <td id="player1name">Play1</td>
 
-                <td id="play11" class="frontNine">1</td>
+                <td id="play11" class="frontNine" contenteditable="true">1</td>
                 <td id="play12" class="frontNine">2</td>
                 <td id="play13" class="frontNine">3</td>
                 <td id="play14" class="frontNine">4</td>
@@ -200,6 +252,7 @@
                 <td id="play2Total">21</td>
                 <td id="play2OverUnder">22</td>
             </tr>
+
             <tr id="player3">
                 <td id="player3name">Play3</td>
                 <td id="play31" class="frontNine">1</td>
@@ -357,26 +410,26 @@
 
             <tr id="redTee">
                 <td>Women:</td>
-                <td id="redYard1" class=”front9”></td>
-                <td id="redYard2" class=”front9”></td>
-                <td id="redYard3" class=”front9”></td>
-                <td id="redYard4" class=”front9”></td>
-                <td id="redYard5" class=”front9”></td>
-                <td id="redYard6" class=”front9”></td>
-                <td id="redYard7" class=”front9”></td>
-                <td id="redYard8" class=”front9”></td>
-                <td id="redYard9" class=”front9”></td>
-                <td id="redYardF9"></td>
-                <td id="redYard10" class=”back9”></td>
-                <td id="redYard11" class=”back9”></td>
-                <td id="redYard12" class=”back9”></td>
-                <td id="redYard13" class=”back9”></td>
-                <td id="redYard14" class=”back9”></td>
-                <td id="redYard15" class=”back9”></td>
-                <td id="redYard16" class=”back9”></td>
-                <td id="redYard17" class=”back9”></td>
-                <td id="redYard18" class=”back9”></td>
-                <td id="redYardB9"></td>
+                <td id="redYard1" class="frontNine"></td>
+                <td id="redYard2" class="frontNine"></td>
+                <td id="redYard3" class="frontNine"></td>
+                <td id="redYard4" class="frontNine"></td>
+                <td id="redYard5" class="frontNine"></td>
+                <td id="redYard6" class="frontNine"></td>
+                <td id="redYard7" class="frontNine"></td>
+                <td id="redYard8" class="frontNine"></td>
+                <td id="redYard9" class="frontNine"></td>
+                <td id="redYardF9" class="frontNine"></td>
+                <td id="redYard10" class="backNine"></td>
+                <td id="redYard11" class="backNine"></td>
+                <td id="redYard12" class="backNine"></td>
+                <td id="redYard13" class="backNine"></td>
+                <td id="redYard14" class="backNine"></td>
+                <td id="redYard15" class="backNine"></td>
+                <td id="redYard16" class="backNine"></td>
+                <td id="redYard17" class="backNine"></td>
+                <td id="redYard18" class="backNine"></td>
+                <td id="redYardB9" class="backNine"></td>
                 <td id="redYardTotal"></td>
                 <td></td>
             </tr>
@@ -393,6 +446,11 @@
 
     </div>
 </div>
+<button class="cardOptions" onclick="addPlayer()">Add Player (max 8)</button>
+<button class="cardOptions" onclick="removePlayer()">Remove Player</button>
+<button class="cardOptions" onclick="resetCard()">Reset Scorecard</button>
+<button class="cardOptions" id="toggle" onclick="toggleView()">Switch Front / Back Nine</button>
+
 
 
 <script src="../js/CourseInfo.js"></script>

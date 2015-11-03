@@ -1,10 +1,56 @@
 var numberOfHoles = 9;
 var holeText = "";
 var playAdd = 0;
+var select = "";
+var firstHoles = true;
 
-//$("#addPlayer").click(function(){
-//    $("table#redRow").before("<table class='Player'><tr><td>'Player Name'</td></tr></table>");
-//});
+$(window).load(function(){
+    $('#setupModal').modal('show');
+});
+
+function setFull() {
+    $("#toggle").css("display", "inline-block");
+    $(".frontNine").css("display", "table-cell");
+    $("#setupModal").modal("hide");
+    $('#playerModal').modal('show');
+}
+
+function setFrontNine() {
+    $(".frontNine").css("display", "table-cell");
+    $("#setupModal").modal("hide");
+    $('#playerModal').modal('show');
+}
+
+function setBackNine() {
+    $(".backNine").css("display", "table-cell");
+    $("#setupModal").modal("hide");
+    $('#playerModal').modal('show');
+}
+
+function toggleView(){
+    if (firstHoles) {
+        $(".frontNine").css("display", "none");
+        $(".backNine").css("display", "table-cell");
+        firstHoles = false;
+    }
+    else {
+        $(".backNine").css("display", "none");
+        $(".frontNine").css("display", "table-cell");
+        firstHoles = true;
+    }
+}
+function addRow(n){
+    var playName = "";
+    for (var i = 0; i < n; i++){
+        $("#player" + (i+1)).css("display", "table-row");
+        playName = prompt("Please enter Player " + (i+1) + "'s Name: ", "player");
+        if (playName != null) {
+            document.getElementById("player" + (i+1) + "name").innerHTML = playName;
+        }
+    }
+    $('#playerModal').modal('hide');
+}
+
 function addPlayer() {
     if (playAdd == 8) {
         return;
@@ -141,7 +187,7 @@ if (accessToken == null) {
 else {
     accessToken = accessToken.replace("\n", "");
     getCourse(47500);
-
+//Pebble Beach: 13197; St. Andrews (Old Course): 51763; Thanksgiving Point: 11819; Cold Water Canyon: 47500
 }
 
 function getUrlVars() {
@@ -192,7 +238,7 @@ function initMap(myLatLng) {
     var marker = new google.maps.Marker({
         position: myLatLng,
         map: map,
-        title: "Cold Water Canyon"
+        title: "Clubhouse"
     });
 }
 
@@ -255,8 +301,3 @@ function hole(hn) {
 //scores are input
 //
 // Bootstrap??
-//
-//
-//
-//
-//
