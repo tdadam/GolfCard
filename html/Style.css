@@ -27,16 +27,22 @@ table {
     border-top: solid 2pt black;
     margin: 10px auto 0 auto;
 }
-#holeNum{
+
+#holeNum {
     background-color: forestgreen;
     color: white;
 }
+
 #redTee {
     margin: 0 auto 10px auto
 }
 
 tr td {
     border: solid 2pt black;
+}
+
+td {
+    padding-left: 5px;
 }
 
 #blackTee td {
@@ -98,28 +104,54 @@ tr td {
     display: none;
     background-color: azure;
 }
-#toggle{
+
+#toggle {
     display: none;
 }
+
 .frontNine {
     display: none;
 }
+
 .backNine {
     display: none;
 }
+
 .col-md-4 {
     margin: auto;
-    
+
 }
-.myModalInfo{
+
+.myModalInfo {
     display: flex;
     align-content: space-around;
     margin: 0 auto;
 }
-.col-md-3{
+
+.col-md-3 {
     margin: auto;
     padding: 5px;
 }
-.cardOptions{
+
+.cardOptions {
     margin: 15px;
+}
+
+.playerEntry {
+    display: none;
+}
+
+td input {
+    width: 25px;
+    margin: auto;
+}
+
+#resetGame {
+    margin: 15px;
+    float: right;
+}
+
+#finishGame {
+    margin: 15px;
+    float: right;
 }

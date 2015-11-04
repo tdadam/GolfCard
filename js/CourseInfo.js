@@ -4,7 +4,7 @@ var playAdd = 0;
 var select = "";
 var firstHoles = true;
 
-$(window).load(function(){
+$(window).load(function () {
     $('#setupModal').modal('show');
 });
 
@@ -27,7 +27,7 @@ function setBackNine() {
     $('#playerModal').modal('show');
 }
 
-function toggleView(){
+function toggleView() {
     if (firstHoles) {
         $(".frontNine").css("display", "none");
         $(".backNine").css("display", "table-cell");
@@ -39,49 +39,63 @@ function toggleView(){
         firstHoles = true;
     }
 }
-function addRow(n){
-    var playName = "";
-    for (var i = 0; i < n; i++){
-        $("#player" + (i+1)).css("display", "table-row");
-        playName = prompt("Please enter Player " + (i+1) + "'s Name: ", "player");
-        if (playName != null) {
-            document.getElementById("player" + (i+1) + "name").innerHTML = playName;
+function addRow(n) {
+    for (var i = 0; i < n; i++) {
+        $("#player" + (i + 1)).css("display", "table-row");
+        //if (playName != null) {
+        //    document.getElementById("player" + (i+1) + "name").innerHTML = playName;
+        //}
+        $("#p" + (i + 1) + "NameLabel").css("display", "inline-block");
+        $("#p" + (i + 1) + "NameEntry").css("display", "inline-block");
+        $("#modalConfirm").css("display", "inline-block");
+        playAdd++;
+    }
+}
+function startGame() {
+
+    for (var i = 1; i <= playAdd; i++) {
+        var setName = "";
+        var backupName = "Player " + i;
+        setName = document.getElementById("p" + i + "NameEntry").value;
+        if (setName != "") {
+            document.getElementById("player" + i + "name").innerHTML = setName;
+        }
+        else {
+            document.getElementById("player" + i + "name").innerHTML = backupName;
         }
     }
     $('#playerModal').modal('hide');
 }
-
-function addPlayer() {
+function startAddPlayer() {
     if (playAdd == 8) {
         return;
     }
     else {
-        var playName = "";
-        if (playAdd < 8) {
-            playAdd++;
-            playName = prompt("Please enter Player Name: ", "player");
-        }
-        for (var i = 1; i < 9; i++)
-
-            if (playAdd == i) {
-
-                if (playName != null) {
-                    document.getElementById("player" + i + "name").innerHTML = playName;
-                }
-                return $("#player" + i).css("display", "table-row");
-            }
+        $('#newPlayer').modal('show');
+        $("#player" + (playAdd + 1)).css("display", "table-row");
     }
 }
+function finishAddPlayer() {
+    playAdd++;
+    var playName = document.getElementById("newPlayerEntry").value;
+    if (playName != "") {
+        document.getElementById("player" + playAdd + "name").innerHTML = playName;
+    }
+    else {
+        document.getElementById("player" + playAdd + "name").innerHTML = "Player " + playAdd;
+    }
+    $('#newPlayer').modal('hide');
+    document.getElementById("newPlayerEntry").value = "";
+}
 function removePlayer() {
-    if (playAdd > 0) {
+    if (playAdd == 0) {
+        return;
+    }
+    else {
+        $("#player" + playAdd).css("display", "none");
+        document.getElementById("player" + playAdd + "name").innerHTML = "Player" + playAdd;
         playAdd--;
     }
-    for (var i = 8; i > 0; i--)
-
-        if (playAdd == (i - 1)) {
-
-            return $("#player" + i).css("display", "none");
-        }
 }
 
 function setPar() {
