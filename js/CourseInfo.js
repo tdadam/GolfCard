@@ -8,6 +8,10 @@ $(window).load(function () {
     $('#setupModal').modal('show');
 });
 
+$(':input[type=number]').on('mousewheel', function(e){
+    e.preventDefault();
+});
+
 function setFull() {
     $("#toggle").css("display", "inline-block");
     $(".frontNine").css("display", "table-cell");
@@ -42,9 +46,6 @@ function toggleView() {
 function addRow(n) {
     for (var i = 0; i < n; i++) {
         $("#player" + (i + 1)).css("display", "table-row");
-        //if (playName != null) {
-        //    document.getElementById("player" + (i+1) + "name").innerHTML = playName;
-        //}
         $("#p" + (i + 1) + "NameLabel").css("display", "inline-block");
         $("#p" + (i + 1) + "NameEntry").css("display", "inline-block");
         $("#modalConfirm").css("display", "inline-block");
@@ -94,8 +95,16 @@ function removePlayer() {
     else {
         $("#player" + playAdd).css("display", "none");
         document.getElementById("player" + playAdd + "name").innerHTML = "Player" + playAdd;
-        playAdd--;
+        for (var i = 1; i < 19; i++) {
+            document.getElementById("play" + playAdd + "hole" + i).value = "";
+        }
+        document.getElementById("play" + playAdd + "holeF9").value = "";
+        document.getElementById("play" + playAdd + "holeB9").value = "";
+        document.getElementById("play" + playAdd + "Total").value = "";
+        document.getElementById("play" + playAdd + "OverUnder").value = "";
+
     }
+    playAdd--;
 }
 
 function setPar() {
@@ -168,7 +177,19 @@ function getYardTotals() {
         }
     }
 }
-
+function calcScore(n) {
+    var f9Total = 0;
+    var b9Total = 0;
+    for (var i = 1; i < 10; i++) {
+        f9Total += +document.getElementById("play" + n + "hole" + i).value;
+    }
+    document.getElementById("play" + n + "holeF9").innerHTML = String(f9Total);
+    for (var j = 10; j < 19; j++) {
+        b9Total += +document.getElementById("play" + n + "hole" + j).value;
+    }
+    document.getElementById("play" + n + "holeB9").innerHTML = String(b9Total);
+    document.getElementById("play" + n + "Total").innerHTML = String(f9Total + b9Total);
+}
 
 //Prompt: Player names, tee, front/back/full   --- transfer to bootstrap
 
@@ -302,9 +323,6 @@ function hole(hn) {
 //        var tee = model.course.holes[hn - 1].tee_boxes[0].location;
 //        console.log(tee);
 //    }
-// Prompt names, create for each
-//
-// Prompt for front/back/full
 //if front, create 1-9, disable switch
 //if back, create 10-18, disable switch
 //if full, create 1-18, display 1-9 activate switch
