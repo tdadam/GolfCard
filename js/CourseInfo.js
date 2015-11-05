@@ -5,55 +5,87 @@ var select = "";
 var firstHoles = true;
 
 $(window).load(function () {
-    $('#setupModal').modal('show');
+    $('#setupModal').modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
 });
 
-$(':input[type=number]').on('mousewheel', function(e){
+$(':input[type=number]').on('mousewheel', function (e) {
     e.preventDefault();
 });
 
 function setFull() {
-    $("#toggle").css("display", "inline-block");
-    $(".frontNine").css("display", "table-cell");
-    $("#setupModal").modal("hide");
-    $('#playerModal').modal('show');
+    $('#toggle').css('display', 'inline-block');
+    $('.frontNine').css('display', 'table-cell');
+    $('.backNine').css('display', 'none');
+    $('#setupModal').modal('hide');
+    for (var i = 1; i < 7; i++) {
+        $('#add' + i).prop('disabled', false);
+    }
+    $('#playerModal').modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
 }
 
 function setFrontNine() {
-    $(".frontNine").css("display", "table-cell");
-    $("#setupModal").modal("hide");
-    $('#playerModal').modal('show');
+    $('.frontNine').css('display', 'table-cell');
+    $('.backNine').css('display', 'none');
+    $('.columnTotal').css('display', 'none');
+    $('#setupModal').modal('hide');
+    for (var i = 1; i < 7; i++) {
+        $('#add' + i).prop('disabled', false);
+    }
+    $('#playerModal').modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
 }
 
 function setBackNine() {
-    $(".backNine").css("display", "table-cell");
-    $("#setupModal").modal("hide");
-    $('#playerModal').modal('show');
+    $('.backNine').css('display', 'table-cell');
+    $('.frontNine').css('display', 'none');
+    $('.columnTotal').css('display', 'none');
+    $('#setupModal').modal('hide');
+    for (var i = 1; i < 7; i++) {
+        $('#add' + i).prop('disabled', false);
+    }
+    $('#playerModal').modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
 }
 
 function toggleView() {
     if (firstHoles) {
-        $(".frontNine").css("display", "none");
-        $(".backNine").css("display", "table-cell");
+        $('.frontNine').css('display', 'none');
+        $('.backNine').css('display', 'table-cell');
         firstHoles = false;
     }
     else {
-        $(".backNine").css("display", "none");
-        $(".frontNine").css("display", "table-cell");
+        $('.backNine').css('display', 'none');
+        $('.frontNine').css('display', 'table-cell');
         firstHoles = true;
     }
 }
 function addRow(n) {
     for (var i = 0; i < n; i++) {
-        $("#player" + (i + 1)).css("display", "table-row");
-        $("#p" + (i + 1) + "NameLabel").css("display", "inline-block");
-        $("#p" + (i + 1) + "NameEntry").css("display", "inline-block");
-        $("#modalConfirm").css("display", "inline-block");
+        $('#player' + (i + 1)).css('display', 'table-row');
+        $('#p' + (i + 1) + 'NameLabel').css('display', 'inline-block');
+        $('#p' + (i + 1) + 'NameEntry').css('display', 'inline-block');
+        $('#modalConfirm').css('display', 'inline-block');
         playAdd++;
     }
+    for (var j = 1; j < 7; j++)
+        $('#add' + j).prop('disabled', true);
 }
 function startGame() {
-
+    $('.playerEntry').css('display', 'none');
     for (var i = 1; i <= playAdd; i++) {
         var setName = "";
         var backupName = "Player " + i;
@@ -68,16 +100,19 @@ function startGame() {
     $('#playerModal').modal('hide');
 }
 function startAddPlayer() {
-    if (playAdd == 8) {
-        return;
-    }
-    else {
-        $('#newPlayer').modal('show');
-        $("#player" + (playAdd + 1)).css("display", "table-row");
-    }
+    $('#newPlayer').modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
+    $('#player' + (playAdd + 1)).css('display', 'table-row');
+    //}
 }
 function finishAddPlayer() {
     playAdd++;
+    if (playAdd == 8) {
+        $('#addNewPlayer').prop('disabled', true);
+    }
     var playName = document.getElementById("newPlayerEntry").value;
     if (playName != "") {
         document.getElementById("player" + playAdd + "name").innerHTML = playName;
@@ -93,18 +128,26 @@ function removePlayer() {
         return;
     }
     else {
-        $("#player" + playAdd).css("display", "none");
+        $('#player' + playAdd).css('display', 'none');
         document.getElementById("player" + playAdd + "name").innerHTML = "Player" + playAdd;
         for (var i = 1; i < 19; i++) {
             document.getElementById("play" + playAdd + "hole" + i).value = "";
         }
-        document.getElementById("play" + playAdd + "holeF9").value = "";
-        document.getElementById("play" + playAdd + "holeB9").value = "";
-        document.getElementById("play" + playAdd + "Total").value = "";
-        document.getElementById("play" + playAdd + "OverUnder").value = "";
+        document.getElementById("play" + playAdd + "holeF9").innerHTML = "";
+        document.getElementById("play" + playAdd + "holeB9").innerHTML = "";
+        document.getElementById("play" + playAdd + "Total").innerHTML = "";
+        document.getElementById("play" + playAdd + "OverUnder").innerHTML = "";
 
     }
     playAdd--;
+    $('#addNewPlayer').prop('disabled', false);
+    if (playAdd == 0) {
+        $('#setupModal').modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: false
+        });
+    }
 }
 
 function setPar() {
@@ -136,19 +179,19 @@ function getYard() {
             }
     }
     if (document.getElementById("blackYard1").innerHTML == "") {
-        $("#blackTee").css("display", "none");
+        $('#blackTee').css('display', 'none');
 
     }
     if (document.getElementById("blueYard1").innerHTML == "") {
-        $("#blueTee").css("display", "none");
+        $('#blueTee').css('display', 'none');
 
     }
     if (document.getElementById("whiteYard1").innerHTML == "") {
-        $("#whiteTee").css("display", "none");
+        $('#whiteTee').css('display', 'none');
 
     }
     if (document.getElementById("redYard1").innerHTML == "") {
-        $("#redTee").css("display", "none");
+        $('#redTee').css('display', 'none');
 
     }
 }
@@ -189,26 +232,35 @@ function calcScore(n) {
     }
     document.getElementById("play" + n + "holeB9").innerHTML = String(b9Total);
     document.getElementById("play" + n + "Total").innerHTML = String(f9Total + b9Total);
+    calcOverUnder(n)
+}
+function calcOverUnder(x) {
+    var final = 0;
+    var finalStroke = 0;
+    var finalPar = 0;
+    for (var i = 1; i < 19; i++) {
+        if (document.getElementById("play" + x + "hole" + i).value != 0) {
+            finalStroke += +document.getElementById("play" + x + "hole" + i).value;
+            finalPar += model.course.holes[i - 1].tee_boxes[0].par;
+            final = finalStroke - finalPar;
+        }
+    }
+    return document.getElementById("play" + x + "OverUnder").innerHTML = final
+}
+function endGame() {
+
+}
+function resetCard() {
+    for (var i = playAdd; i > 0; i--) {
+        removePlayer()
+    }
+    $('#setupModal').modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
 }
 
-//Prompt: Player names, tee, front/back/full   --- transfer to bootstrap
-
-
-// Scorecard will have 9 holes, yardage, par, players, and totals
-//var Players = function() {
-//    this.name = Bob;//entered name
-//    this.tee = num1// entered tee (to calculate yardage)
-//};
-//
-//function reset() {
-//    //reset players and scores, returns to prompt screen
-//}
-//
-//var FrontTotal = //total for first 9 holes (only visible if front or full selected)
-//var BackTotal = //total for back 9 holes (only visible if back or full selected)
-//var FinalTotal = //total for full course (only visible if full selected)
-//
-//
 ////Map will have hole and tee markers, yardage, path to next tee
 
 var clientID = "64f8ab8b-326b-4b4c-9d5f-10b4abf65d9c";
@@ -248,7 +300,7 @@ function getCourse(courseID) {
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             model = JSON.parse(xhttp.responseText);
-            var location = {lat: 43.663415, lng: -89.780945};
+            var location = model.course.location;
             initMap(location);
             document.getElementById("courseName").innerHTML = model.course.name + " Golf Course";
             setPar();
@@ -267,7 +319,7 @@ function initMap(myLatLng) {
         mapTypeId: google.maps.MapTypeId.SATELLITE,
         scrollwheel: false,
         disableDefaultUI: true
-        // set bounds and center on fairway
+        // set bounds
     });
 
     var marker = new google.maps.Marker({
@@ -314,22 +366,3 @@ function hole(hn) {
 
 //         var bounds =
 }
-
-
-//    function check(hn) {
-//        var green = model.course.holes[hn - 1].green_location;
-//        console.log(green);
-//
-//        var tee = model.course.holes[hn - 1].tee_boxes[0].location;
-//        console.log(tee);
-//    }
-//if front, create 1-9, disable switch
-//if back, create 10-18, disable switch
-//if full, create 1-18, display 1-9 activate switch
-//
-//populate yardage
-//populate par
-//
-//scores are input
-//
-// Bootstrap??
