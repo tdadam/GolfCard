@@ -248,7 +248,40 @@ function calcOverUnder(x) {
     return document.getElementById("play" + x + "OverUnder").innerHTML = final
 }
 function endGame() {
-
+    var amazing = "WOW! That was an amazing round for ";
+    var goodResult = " did an excellent job!";
+    var parResult = " had a satisfactory round.";
+    var badResult = " should probably get more practice...";
+    var winnerCheck = [];
+    var lowest = 0;
+    for (var j = 0; j < playAdd; j++){
+        winnerCheck.push(+document.getElementById("play" + (j+1) + "OverUnder"))
+    }
+    for (var k = 1; k < winnerCheck.length; k++) {
+        if (winnerCheck[k] < winnerCheck[lowest]) {
+            lowest = k;
+        }
+        else if (winnerCheck[k] == winnerCheck[lowest]) {
+            $('#tieGame').css('display', 'block');
+            $('#winner').css('display', 'none');
+            return document.getElementById("tieGame").innerHTML = "There was a tie.";
+        }
+    }
+    document.getElementById("winner").innerHTML = "The winner is: " + winnerCheck[lowest] + "!";
+    for (var i = 0; i < playAdd; i++){
+        if (+document.getElementById("play" + (i+1) + "OverUnder") <= -16){
+            document.getElementById("comment" + (i+1)).innerHTML = amazing + document.getElementById("player" + (i+1) + "name").innerHTML + "!";
+        }
+        else if (+document.getElementById("play" + (i+1) + "OverUnder") <= -5){
+            document.getElementById("comment" + (i+1)).innerHTML = document.getElementById("player" + (i+1) + "name").innerHTML + goodResult;
+        }
+        else if (+document.getElementById("play" + (i+1) + "OverUnder") <= 5){
+            document.getElementById("comment" + (i+1)).innerHTML = document.getElementById("player" + (i+1) + "name").innerHTML + parResult;
+        }
+        else {
+            document.getElementById("comment" + (i+1)).innerHTML = document.getElementById("player" + (i+1) + "name").innerHTML + badResult;
+        }
+    }
 }
 function resetCard() {
     for (var i = playAdd; i > 0; i--) {
