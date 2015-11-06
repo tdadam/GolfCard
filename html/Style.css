@@ -33,10 +33,6 @@ table {
     color: white;
 }
 
-#redTee {
-    margin: 0 auto 10px auto
-}
-
 tr td {
     border: solid 2pt black;
 }
@@ -46,22 +42,25 @@ td {
     text-align: center;
 }
 
-#blackTee td {
+#blackTee {
     background-color: black;
     color: white;
+    display: none;
 }
 
-#blueTee td {
+#blueTee {
     background-color: blue;
     color: white;
+    display: none;
 }
 
-#whiteTee td {
+#whiteTee {
     background-color: white;
-    /*color: white*/
+    display: none;
 }
 
-#redTee td {
+#redTee {
+    display: none;
     background-color: red;
     color: white;
 }
@@ -129,11 +128,12 @@ td {
     margin: 0 auto;
 }
 
-.col-md-3 {
+.col-md-5 {
     margin: auto;
     padding: 5px;
 }
-.col-md-3{
+
+.col-md-3 {
     margin: auto;
     padding: 5px;
 }
@@ -162,43 +162,62 @@ td input {
     margin: 15px;
     float: right;
 }
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-#tieGame{
+
+#tieGame {
     display: none;
 }
-#noWinnerGame{
+
+#noWinnerGame {
     display: none;
 }
-.pointer:hover{
+
+.pointer:hover {
     cursor: pointer;
 }
-#hcpNum{
+
+#hcpNum {
     background-color: #6d6a6a;
     color: white;
+    display: none;
 }
+
 #courseError {
     color: red;
 }
-.PElabel{
+
+.PElabel {
     padding-top: 5px;
     float: left;
     margin-bottom: 10px;
 }
-.PEinput{
+
+.PEinput {
     float: left;
     width: 200px;
     margin: 0 0 10px 15px;
     padding: 5px 0 5px 0;
 }
-.PEselect{
+
+.PEselect {
     float: right;
     width: 200px;
     margin-bottom: 10px;
 }
-#playerForm{
+
+#playerForm {
     overflow: hidden;
+}
+
+#newPlayerForm {
+    overflow: hidden;
+}
+
+.playerEntryInst {
+    display: none;
 }

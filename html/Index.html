@@ -30,23 +30,37 @@
                 <h4 class="modal-title myModalLabel">Choose a Course:</h4>
             </div>
             <div class="modal-body">
-                <div id="courseError"></div><br>
+                <div id="courseError"></div>
+                <br>
+
                 <div class="row myModalInfo">
 
-                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(51763)">St. Andrews (Old Course), UK</button>
-                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(13197)">Pebble Beach, FL</button>
-                    </div>
+                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(51763)">St. Andrews (Old
+                        Course), UK
+                    </button>
+                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(13197)">Pebble Beach, FL
+                    </button>
+                </div>
+                <br>
+
                 <div class="row myModalInfo">
-                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(47500)">Cold Water Canyon, WI</button>
-                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(11819)">Thanksgiving Point, UT</button>
-                </div><br>
+                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(47500)">Cold Water Canyon,
+                        WI
+                    </button>
+                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(11819)">Thanksgiving
+                        Point, UT
+                    </button>
+                </div>
+                <br>
+
                 <div>
                     <label id=courseEntryLabel" for="courseIDEntry">Enter a 5-digit Swing By Swing course ID:</label>
                     <input id="courseIDEntry" placeholder="29182" type="number" onkeyup="checkValid()"><br>
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="courseSetConfirm" type="button" class="btn btn-primary" disabled="disabled" onclick="setCourseID()">Submit
+                <button id="courseSetConfirm" type="button" class="btn btn-primary" disabled="disabled"
+                        onclick="setCourseID()">Submit
                 </button>
             </div>
         </div>
@@ -62,79 +76,101 @@
                 <div class="row myModalInfo">
 
                     <button type="button" class="btn btn-primary col-md-3 holeSetup" onclick="setFull()">Full</button>
-                    <button type="button" class="btn btn-primary col-md-3 holeSetup" onclick="setFrontNine()">Front Nine</button>
-                    <button type="button" class="btn btn-primary col-md-3 holeSetup" onclick="setBackNine()">Back Nine</button>
-                </div><br>
-                <div class="playerSetup"> Select number of players:</div><br>
+                    <button type="button" class="btn btn-primary col-md-3 holeSetup" onclick="setFrontNine()">Front
+                        Nine
+                    </button>
+                    <button type="button" class="btn btn-primary col-md-3 holeSetup" onclick="setBackNine()">Back Nine
+                    </button>
+                </div>
+                <br>
+
+                <div class="playerSetup"> Select number of players:</div>
+                <br><br>
+
                 <div class="row myModalInfo">
 
-                    <button type="button" id="add1" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(1)">1</button>
-                    <button type="button" id="add2" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(2)">2</button>
-                    <button type="button" id="add3" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(3)">3</button>
+                    <button type="button" id="add1" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(1)">1
+                    </button>
+                    <button type="button" id="add2" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(2)">2
+                    </button>
+                    <button type="button" id="add3" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(3)">3
+                    </button>
 
-                </div><br>
+                </div>
+                <br>
+
                 <div class="row myModalInfo">
-                    <button type="button" id="add4" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(4)">4</button>
-                    <button type="button" id="add5" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(5)">5</button>
-                    <button type="button" id="add6" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(6)">6</button>
-                </div><br>
+                    <button type="button" id="add4" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(4)">4
+                    </button>
+                    <button type="button" id="add5" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(5)">5
+                    </button>
+                    <button type="button" id="add6" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(6)">6
+                    </button>
+                </div>
+                <br>
+
+                <div class="playerEntryInst">Enter name and Select Tee:</div>
+                <div class="playerEntryInst">Only Player 1 tee selection is required.</div>
+                <br>
+
                 <form id="playerForm">
                     <label id="p1NameLabel" for="p1NameEntry" class="playerEntry PElabel">Player 1 Name: </label>
                     <input id="p1NameEntry" class="playerEntry PEinput">
-                    <select id="p1TeeEntry" class="form-control playerEntry PEselect">
-                        <option disabled selected> -- select an option -- </option>
-                        <option class="selectBlack">Pro (Black Tee)</option>
-                        <option class="selectBlue">Champion (Blue Tee)</option>
-                        <option class="selectWhite">Men (White Tee)</option>
-                        <option class="selectRed">Women (Red Tee)</option>
+                    <select id="p1TeeEntry" class="form-control playerEntry PEselect" onchange="activateStart()">
+                        <option disabled selected value=""> -- select an option --</option>
+                        <option class="selectBlack" value="Black">Pro (Black Tee)</option>
+                        <option class="selectBlue" value="Blue">Champion (Blue Tee)</option>
+                        <option class="selectWhite" value="White">Men (White Tee)</option>
+                        <option class="selectRed" value="Red">Women (Red Tee)</option>
                     </select>
                     <label id="p2NameLabel" for="p2NameEntry" class="playerEntry PElabel">Player 2 Name: </label>
                     <input id="p2NameEntry" class="playerEntry PEinput">
                     <select id="p2TeeEntry" class="form-control playerEntry PEselect">
-                        <option disabled selected> -- select an option -- </option>
-                        <option class="selectBlack">Pro (Black Tee)</option>
-                        <option class="selectBlue">Champion (Blue Tee)</option>
-                        <option class="selectWhite">Men (White Tee)</option>
-                        <option class="selectRed">Women (Red Tee)</option>
+                        <option disabled selected value=""> -- select an option --</option>
+                        <option class="selectBlack" value="Black">Pro (Black Tee)</option>
+                        <option class="selectBlue" value="Blue">Champion (Blue Tee)</option>
+                        <option class="selectWhite" value="White">Men (White Tee)</option>
+                        <option class="selectRed" value="Red">Women (Red Tee)</option>
                     </select>
 
                     <label id="p3NameLabel" for="p3NameEntry" class="playerEntry PElabel">Player 3 Name: </label>
                     <input id="p3NameEntry" class="playerEntry PEinput">
                     <select id="p3TeeEntry" class="form-control playerEntry PEselect">
-                        <option disabled selected> -- select an option -- </option>
-                        <option class="selectBlack">Pro (Black Tee)</option>
-                        <option class="selectBlue">Champion (Blue Tee)</option>
-                        <option class="selectWhite">Men (White Tee)</option>
-                        <option class="selectRed">Women (Red Tee)</option>
+                        <option disabled selected value=""> -- select an option --</option>
+                        <option class="selectBlack" value="Black">Pro (Black Tee)</option>
+                        <option class="selectBlue" value="Blue">Champion (Blue Tee)</option>
+                        <option class="selectWhite" value="White">Men (White Tee)</option>
+                        <option class="selectRed" value="Red">Women (Red Tee)</option>
                     </select>
                     <label id="p4NameLabel" for="p4NameEntry" class="playerEntry PElabel">Player 4 Name: </label>
                     <input id="p4NameEntry" class="playerEntry PEinput">
                     <select id="p4TeeEntry" class="form-control playerEntry PEselect">
-                        <option disabled selected> -- select an option -- </option>
-                        <option class="selectBlack">Pro (Black Tee)</option>
-                        <option class="selectBlue">Champion (Blue Tee)</option>
-                        <option class="selectWhite">Men (White Tee)</option>
-                        <option class="selectRed">Women (Red Tee)</option>
+                        <option disabled selected value=""> -- select an option --</option>
+                        <option class="selectBlack" value="Black">Pro (Black Tee)</option>
+                        <option class="selectBlue" value="Blue">Champion (Blue Tee)</option>
+                        <option class="selectWhite" value="White">Men (White Tee)</option>
+                        <option class="selectRed" value="Red">Women (Red Tee)</option>
                     </select>
                     <label id="p5NameLabel" for="p5NameEntry" class="playerEntry PElabel">Player 5 Name: </label>
                     <input id="p5NameEntry" class="playerEntry PEinput">
                     <select id="p5TeeEntry" class="form-control playerEntry PEselect">
-                        <option disabled selected> -- select an option -- </option>
-                        <option class="selectBlack">Pro (Black Tee)</option>
-                        <option class="selectBlue">Champion (Blue Tee)</option>
-                        <option class="selectWhite">Men (White Tee)</option>
-                        <option class="selectRed">Women (Red Tee)</option>
+                        <option disabled selected value=""> -- select an option --</option>
+                        <option class="selectBlack" value="Black">Pro (Black Tee)</option>
+                        <option class="selectBlue" value="Blue">Champion (Blue Tee)</option>
+                        <option class="selectWhite" value="White">Men (White Tee)</option>
+                        <option class="selectRed" value="Red">Women (Red Tee)</option>
                     </select><br><br>
                     <label id="p6NameLabel" for="p6NameEntry" class="playerEntry PElabel">Player 6 Name: </label>
                     <input id="p6NameEntry" class="playerEntry PEinput">
                     <select id="p6TeeEntry" class="form-control playerEntry PEselect">
-                        <option class="disabled selected"> -- select an option -- </option>
-                        <option class="selectBlack">Pro (Black Tee)</option>
-                        <option class="selectBlue">Champion (Blue Tee)</option>
-                        <option class="selectWhite">Men (White Tee)</option>
-                        <option class="selectRed">Women (Red Tee)</option>
+                        <option disabled selected value=""> -- select an option --</option>
+                        <option class="selectBlack" value="Black">Pro (Black Tee)</option>
+                        <option class="selectBlue" value="Blue">Champion (Blue Tee)</option>
+                        <option class="selectWhite" value="White">Men (White Tee)</option>
+                        <option class="selectRed" value="Red">Women (Red Tee)</option>
                     </select>
-                </form></div>
+                </form>
+            </div>
             <div class="modal-footer">
 
                 <button id="modalConfirm" type="button" class="btn btn-success playerEntry" onclick="startGame()">Start
@@ -152,8 +188,17 @@
                 <h4 class="modal-title myModalLabel">Add Player:</h4>
             </div>
             <div class="modal-body">
-                <label id="newPlayerLabel" for="newPlayerEntry">Name: </label>
-                <input id="newPlayerEntry">
+                <form id="newPlayerForm">
+                    <label id="newPlayerLabel" for="newPlayerEntry" class="PElabel">Name: </label>
+                    <input id="newPlayerEntry" class="PEinput">
+                    <select id="newTeeEntry" class="form-control PEselect">
+                        <option disabled selected value=""> -- select an option --</option>
+                        <option class="selectBlack" value="Black">Pro (Black Tee)</option>
+                        <option class="selectBlue" value="Blue">Champion (Blue Tee)</option>
+                        <option class="selectWhite" value="White">Men (White Tee)</option>
+                        <option class="selectRed" value="Red">Women (Red Tee)</option>
+                    </select>
+                </form>
             </div>
             <div class="modal-footer">
                 <button id="modalAddConfirm" type="button" class="btn btn-success" onclick="finishAddPlayer()">Add
@@ -174,8 +219,8 @@
                 <input id="editPlayerEntry">
             </div>
             <div class="modal-footer">
-                <button id="modalEditConfirm" type="button" class="btn btn-success" onclick="finishEditPlayerName()">Add
-                    Player
+                <button id="modalEditConfirm" type="button" class="btn btn-success" onclick="finishEditPlayerName()">
+                    Change Name
                 </button>
             </div>
         </div>

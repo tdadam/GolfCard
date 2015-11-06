@@ -19,6 +19,13 @@ $(':input[type=number]').on('mousewheel', function (e) {
     e.preventDefault();
 });
 
+function hideYardRows() {
+    $('#blackTee').css('display', 'none');
+    $('#blueTee').css('display', 'none');
+    $('#whiteTee').css('display', 'none');
+    $('#redTee').css('display', 'none');
+}
+
 function setFull() {
     $('#toggle').css('display', 'inline-block');
     $('.frontNine').css('display', 'table-cell');
@@ -52,6 +59,8 @@ function onlyNine() {
     $('.nineHole').css('display', 'none');
     $('.playerSetup').css('display', 'inline-block');
     $('.playerSetup').prop('disabled', false);
+    $('#modalConfirm').prop('disabled', true);
+    hideYardRows();
     $('#setupModal').modal({
         show: true,
         backdrop: 'static',
@@ -72,6 +81,7 @@ function toggleView() {
     }
 }
 function addRow(n) {
+    $('.playerEntryInst').css('display', 'block');
     for (var i = 0; i < n; i++) {
         $('#player' + (i + 1)).css('display', 'table-row');
         $('#p' + (i + 1) + 'NameLabel').css('display', 'inline-block');
@@ -82,7 +92,11 @@ function addRow(n) {
     $('.playerSetup').prop('disabled', true);
     $('#modalConfirm').css('display', 'inline-block');
 }
+function activateStart() {
+    $('#modalConfirm').prop('disabled', false)
+}
 function startGame() {
+    $('.playerEntryInst').css('display', 'none');
     $('.playerEntry').css('display', 'none');
     $('.playerSetup').css('display', 'none');
     $('.holeSetup').css('display', 'inline-block');
@@ -98,7 +112,23 @@ function startGame() {
             document.getElementById("player" + i + "name").innerHTML = backupName;
         }
     }
-
+    for (var j = 1; j < 7; j++) {
+        if (document.getElementById("p" + j + "TeeEntry").value == "Black") {
+            $('#blackTee').css('display', 'table-row');
+        }
+        else if (document.getElementById("p" + j + "TeeEntry").value == "Blue") {
+            $('#blueTee').css('display', 'table-row');
+        }
+        else if (document.getElementById("p" + j + "TeeEntry").value == "White") {
+            $('#whiteTee').css('display', 'table-row');
+        }
+        else if (document.getElementById("p" + j + "TeeEntry").value == "Red") {
+            $('#redTee').css('display', 'table-row');
+        }
+    }
+    for (var k = 1; k < 7; k++) {
+        document.getElementById("p" + k + "TeeEntry").value = "";
+    }
     $('#setupModal').modal('hide');
 }
 function startAddPlayer() {
@@ -121,7 +151,20 @@ function finishAddPlayer() {
     else {
         document.getElementById("player" + playAdd + "name").innerHTML = "Player " + playAdd;
     }
+    if (document.getElementById("newTeeEntry").value == "Black") {
+        $('#blackTee').css('display', 'table-row');
+    }
+    else if (document.getElementById("newTeeEntry").value == "Blue") {
+        $('#blueTee').css('display', 'table-row');
+    }
+    else if (document.getElementById("newTeeEntry").value == "White") {
+        $('#whiteTee').css('display', 'table-row');
+    }
+    else if (document.getElementById("newTeeEntry").value == "Red") {
+        $('#redTee').css('display', 'table-row');
+    }
     $('#newPlayer').modal('hide');
+    document.getElementById("newTeeEntry").value = "";
     document.getElementById("newPlayerEntry").value = "";
 }
 function startEditPlayerName(n) {
@@ -158,6 +201,8 @@ function removePlayer() {
     playAdd--;
     $('#addNewPlayer').prop('disabled', false);
     if (playAdd == 0 && courseLength != 9) {
+        $('#modalConfirm').prop('disabled', true);
+        hideYardRows();
         $('#setupModal').modal({
             show: true,
             backdrop: 'static',
@@ -206,19 +251,15 @@ function getYard() {
         }
     }
     if (document.getElementById("blackYard1").innerHTML == "") {
-        $('#blackTee').css('display', 'none');
         $('.selectBlack').css('display', 'none');
     }
     if (document.getElementById("blueYard1").innerHTML == "") {
-        $('#blueTee').css('display', 'none');
         $('.selectBlue').css('display', 'none');
     }
     if (document.getElementById("whiteYard1").innerHTML == "") {
-        $('#whiteTee').css('display', 'none');
         $('.selectWhite').css('display', 'none');
     }
     if (document.getElementById("redYard1").innerHTML == "") {
-        $('#redTee').css('display', 'none');
         $('.selectRed').css('display', 'none');
     }
     if (document.getElementById("hcp1").innerHTML == "") {
@@ -251,21 +292,21 @@ function getYardTotals() {
         }
     }
 }
-function resetYard(){
-    $('#blackTee').css('display', 'table-row');
-    $('#selectBlack').css('display', 'inline-block');
-    $('#blueTee').css('display', 'table-row');
-    $('#selectBlue').css('display', 'inline-block');
-    $('#whiteTee').css('display', 'table-row');
-    $('#selectWhite').css('display', 'inline-block');
-    $('#redTee').css('display', 'table-row');
-    $('#selectRed').css('display', 'inline-block');
+function resetYard() {
+    $('#blackTee').css('display', 'none');
+    $('.selectBlack').css('display', 'inline-block');
+    $('#blueTee').css('display', 'none');
+    $('.selectBlue').css('display', 'inline-block');
+    $('#whiteTee').css('display', 'none');
+    $('.selectWhite').css('display', 'inline-block');
+    $('#redTee').css('display', 'none');
+    $('.selectRed').css('display', 'inline-block');
     $('#hcpNum').css('display', 'table-row');
-    document.getElementById("blackYard1").innerHTML = "";
-    document.getElementById("whiteYard1").innerHTML = "";
-    document.getElementById("blueYard1").innerHTML = "";
-    document.getElementById("redYard1").innerHTML = "";
     document.getElementById("hcp1").innerHTML = "";
+    document.getElementById("blackYard1").innerHTML = "";
+    document.getElementById("blueYard1").innerHTML = "";
+    document.getElementById("whiteYard1").innerHTML = "";
+    document.getElementById("redYard1").innerHTML = "";
 }
 function calcScore(n) {
     var f9Total = 0;
@@ -348,6 +389,8 @@ function resetCard() {
         removePlayer()
     }
     if (courseLength != 9) {
+        $('#modalConfirm').prop('disabled', true);
+        hideYardRows();
         $('#setupModal').modal({
             show: true,
             backdrop: 'static',
@@ -371,7 +414,7 @@ function newCourse() {
         document.getElementById("play" + playAdd + "OverUnder").innerHTML = "";
         playAdd--;
     }
-resetYard();
+    resetYard();
     $('#addNewPlayer').prop('disabled', false);
     $('#courseSetConfirm').prop('disabled', true);
     $('#setupCourse').modal({
@@ -448,7 +491,9 @@ function getCourse(courseID) {
                 onlyNine();
             }
             else {
+                $('#modalConfirm').prop('disabled', true);
                 $('.playerSetup').css('display', 'none');
+                hideYardRows();
                 $('#setupModal').modal({
                     show: true,
                     backdrop: 'static',
@@ -512,7 +557,7 @@ function hole(hn) {
         icon: greenMarker
     });
     var bounds = new google.maps.LatLngBounds();
-    bounds.extend(new google.maps.LatLng (green.lat, green.lng));
-    bounds.extend(new google.maps.LatLng (tee.lat, tee.lng));
+    bounds.extend(new google.maps.LatLng(green.lat, green.lng));
+    bounds.extend(new google.maps.LatLng(tee.lat, tee.lng));
     map.fitBounds(bounds);
 }
