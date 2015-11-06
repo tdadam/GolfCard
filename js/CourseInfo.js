@@ -3,9 +3,12 @@ var holeText = "";
 var playAdd = 0;
 var select = "";
 var firstHoles = true;
+var courseLength = 0;
+var editNum = 0
 
 $(window).load(function () {
-    $('#setupModal').modal({
+    $('courseSetConfirm').prop('diabled', true);
+    $('#setupCourse').modal({
         show: true,
         backdrop: 'static',
         keyboard: false
@@ -20,41 +23,36 @@ function setFull() {
     $('#toggle').css('display', 'inline-block');
     $('.frontNine').css('display', 'table-cell');
     $('.backNine').css('display', 'none');
-    $('#setupModal').modal('hide');
-    for (var i = 1; i < 7; i++) {
-        $('#add' + i).prop('disabled', false);
-    }
-    $('#playerModal').modal({
-        show: true,
-        backdrop: 'static',
-        keyboard: false
-    });
+    $('.playerSetup').css('display', 'inline-block');
+    $('.playerSetup').prop('disabled', false);
+    $('.holeSetup').prop('disabled', true);
 }
 
 function setFrontNine() {
     $('.frontNine').css('display', 'table-cell');
     $('.backNine').css('display', 'none');
     $('.columnTotal').css('display', 'none');
-    $('#setupModal').modal('hide');
-    for (var i = 1; i < 7; i++) {
-        $('#add' + i).prop('disabled', false);
-    }
-    $('#playerModal').modal({
-        show: true,
-        backdrop: 'static',
-        keyboard: false
-    });
+    $('.playerSetup').css('display', 'inline-block');
+    $('.playerSetup').prop('disabled', false);
+    $('.holeSetup').prop('disabled', true);
 }
 
 function setBackNine() {
     $('.backNine').css('display', 'table-cell');
     $('.frontNine').css('display', 'none');
     $('.columnTotal').css('display', 'none');
-    $('#setupModal').modal('hide');
-    for (var i = 1; i < 7; i++) {
-        $('#add' + i).prop('disabled', false);
-    }
-    $('#playerModal').modal({
+    $('.playerSetup').css('display', 'inline-block');
+    $('.playerSetup').prop('disabled', false);
+    $('.holeSetup').prop('disabled', true);
+}
+
+function onlyNine() {
+    $('.holeSetup').css('display', 'none');
+    $('.frontNine').css('display', 'table-cell');
+    $('.nineHole').css('display', 'none');
+    $('.playerSetup').css('display', 'inline-block');
+    $('.playerSetup').prop('disabled', false);
+    $('#setupModal').modal({
         show: true,
         backdrop: 'static',
         keyboard: false
@@ -78,14 +76,17 @@ function addRow(n) {
         $('#player' + (i + 1)).css('display', 'table-row');
         $('#p' + (i + 1) + 'NameLabel').css('display', 'inline-block');
         $('#p' + (i + 1) + 'NameEntry').css('display', 'inline-block');
-        $('#modalConfirm').css('display', 'inline-block');
+        $('#p' + (i + 1) + 'TeeEntry').css('display', 'inline-block');
         playAdd++;
     }
-    for (var j = 1; j < 7; j++)
-        $('#add' + j).prop('disabled', true);
+    $('.playerSetup').prop('disabled', true);
+    $('#modalConfirm').css('display', 'inline-block');
 }
 function startGame() {
     $('.playerEntry').css('display', 'none');
+    $('.playerSetup').css('display', 'none');
+    $('.holeSetup').css('display', 'inline-block');
+    $('.holeSetup').prop('disabled', false);
     for (var i = 1; i <= playAdd; i++) {
         var setName = "";
         var backupName = "Player " + i;
@@ -97,7 +98,8 @@ function startGame() {
             document.getElementById("player" + i + "name").innerHTML = backupName;
         }
     }
-    $('#playerModal').modal('hide');
+
+    $('#setupModal').modal('hide');
 }
 function startAddPlayer() {
     $('#newPlayer').modal({
@@ -106,7 +108,6 @@ function startAddPlayer() {
         keyboard: false
     });
     $('#player' + (playAdd + 1)).css('display', 'table-row');
-    //}
 }
 function finishAddPlayer() {
     playAdd++;
@@ -123,6 +124,21 @@ function finishAddPlayer() {
     $('#newPlayer').modal('hide');
     document.getElementById("newPlayerEntry").value = "";
 }
+function startEditPlayerName(n) {
+    $('#editPlayer').modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
+    document.getElementById("editPlayerEntry").value = document.getElementById("player" + n + "name").innerHTML;
+    editNum = n;
+}
+
+function finishEditPlayerName() {
+    document.getElementById("player" + editNum + "name").innerHTML = document.getElementById("editPlayerEntry").value;
+    $('#editPlayer').modal('hide');
+}
+
 function removePlayer() {
     if (playAdd == 0) {
         return;
@@ -141,24 +157,30 @@ function removePlayer() {
     }
     playAdd--;
     $('#addNewPlayer').prop('disabled', false);
-    if (playAdd == 0) {
+    if (playAdd == 0 && courseLength != 9) {
         $('#setupModal').modal({
             show: true,
             backdrop: 'static',
             keyboard: false
         });
     }
+    else if (playAdd == 0 && courseLength == 9) {
+        onlyNine();
+    }
 }
 
 function setPar() {
-    for (var i = 1; i < 19; i++) {
+    var holeCount = model.course.holes.length;
+    for (var i = 0; i < holeCount; i++) {
 
-        document.getElementById(("par" + i)).innerHTML = model.course.holes[i - 1].tee_boxes[0].par;
+        document.getElementById("par" + (i + 1)).innerHTML = model.course.holes[i].tee_boxes[0].par;
 
     }
     document.getElementById("parF9").innerHTML = model.course.tee_types[0].front_nine_par;
-    document.getElementById("parB9").innerHTML = model.course.tee_types[0].back_nine_par;
     document.getElementById("parTotal").innerHTML = model.course.tee_types[0].par;
+    if (holeCount == 18) {
+        document.getElementById("parB9").innerHTML = model.course.tee_types[0].back_nine_par;
+    }
 }
 
 function getYard() {
@@ -178,20 +200,29 @@ function getYard() {
                 document.getElementById("redYard" + (i + 1)).innerHTML = path[i].tee_boxes[j].yards;
             }
     }
+    for (var k = 0; k < path.length; k++) {
+        if (path[k].tee_boxes[0].hcp != null) {
+            document.getElementById("hcp" + (k + 1)).innerHTML = path[k].tee_boxes[0].hcp;
+        }
+    }
     if (document.getElementById("blackYard1").innerHTML == "") {
         $('#blackTee').css('display', 'none');
-
+        $('.selectBlack').css('display', 'none');
     }
     if (document.getElementById("blueYard1").innerHTML == "") {
         $('#blueTee').css('display', 'none');
-
+        $('.selectBlue').css('display', 'none');
     }
     if (document.getElementById("whiteYard1").innerHTML == "") {
         $('#whiteTee').css('display', 'none');
-
+        $('.selectWhite').css('display', 'none');
     }
     if (document.getElementById("redYard1").innerHTML == "") {
         $('#redTee').css('display', 'none');
+        $('.selectRed').css('display', 'none');
+    }
+    if (document.getElementById("hcp1").innerHTML == "") {
+        $('#hcpNum').css('display', 'none');
 
     }
 }
@@ -219,6 +250,22 @@ function getYardTotals() {
             document.getElementById("redYardTotal").innerHTML = path[i].yards;
         }
     }
+}
+function resetYard(){
+    $('#blackTee').css('display', 'table-row');
+    $('#selectBlack').css('display', 'inline-block');
+    $('#blueTee').css('display', 'table-row');
+    $('#selectBlue').css('display', 'inline-block');
+    $('#whiteTee').css('display', 'table-row');
+    $('#selectWhite').css('display', 'inline-block');
+    $('#redTee').css('display', 'table-row');
+    $('#selectRed').css('display', 'inline-block');
+    $('#hcpNum').css('display', 'table-row');
+    document.getElementById("blackYard1").innerHTML = "";
+    document.getElementById("whiteYard1").innerHTML = "";
+    document.getElementById("blueYard1").innerHTML = "";
+    document.getElementById("redYard1").innerHTML = "";
+    document.getElementById("hcp1").innerHTML = "";
 }
 function calcScore(n) {
     var f9Total = 0;
@@ -248,50 +295,103 @@ function calcOverUnder(x) {
     return document.getElementById("play" + x + "OverUnder").innerHTML = final
 }
 function endGame() {
+    $('#tieGame').css('display', 'none');
+    $('#noWinnerGame').css('display', 'none');
+    $('#winner').css('display', 'block');
     var amazing = "WOW! That was an amazing round for ";
     var goodResult = " did an excellent job!";
     var parResult = " had a satisfactory round.";
     var badResult = " should probably get more practice...";
     var winnerCheck = [];
     var lowest = 0;
-    for (var j = 0; j < playAdd; j++){
-        winnerCheck.push(+document.getElementById("play" + (j+1) + "OverUnder"))
+    var winnerName = "";
+    for (var j = 0; j < playAdd; j++) {
+        winnerCheck.push(+document.getElementById("play" + (j + 1) + "OverUnder").innerHTML)
     }
-    for (var k = 1; k < winnerCheck.length; k++) {
-        if (winnerCheck[k] < winnerCheck[lowest]) {
-            lowest = k;
-        }
-        else if (winnerCheck[k] == winnerCheck[lowest]) {
-            $('#tieGame').css('display', 'block');
-            $('#winner').css('display', 'none');
-            return document.getElementById("tieGame").innerHTML = "There was a tie.";
+    if (winnerCheck.length == 1) {
+        $('#noWinnerGame').css('display', 'block');
+        $('#winner').css('display', 'none');
+    }
+    else {
+        for (var k = 1; k < winnerCheck.length; k++) {
+            if (winnerCheck[k] < winnerCheck[lowest]) {
+                lowest = k;
+                winnerName = document.getElementById("player" + (lowest + 1) + "name").innerHTML;
+                $('#winner').css('display', 'block');
+            }
+            else if (winnerCheck[k] == winnerCheck[lowest]) {
+                $('#tieGame').css('display', 'block');
+                $('#winner').css('display', 'none');
+            }
+            winnerName = document.getElementById("player" + (lowest + 1) + "name").innerHTML;
         }
     }
-    document.getElementById("winner").innerHTML = "The winner is: " + winnerCheck[lowest] + "!";
-    for (var i = 0; i < playAdd; i++){
-        if (+document.getElementById("play" + (i+1) + "OverUnder") <= -16){
-            document.getElementById("comment" + (i+1)).innerHTML = amazing + document.getElementById("player" + (i+1) + "name").innerHTML + "!";
+    document.getElementById("winner").innerHTML = "The winner is: " + winnerName + "!";
+    for (var i = 0; i < playAdd; i++) {
+        if (+document.getElementById("play" + (i + 1) + "OverUnder").innerHTML <= (-16)) {
+            document.getElementById("comment" + (i + 1)).innerHTML = amazing + document.getElementById("player" + (i + 1) + "name").innerHTML + "!";
         }
-        else if (+document.getElementById("play" + (i+1) + "OverUnder") <= -5){
-            document.getElementById("comment" + (i+1)).innerHTML = document.getElementById("player" + (i+1) + "name").innerHTML + goodResult;
+        else if ((+document.getElementById("play" + (i + 1) + "OverUnder").innerHTML) <= (-5)) {
+            document.getElementById("comment" + (i + 1)).innerHTML = document.getElementById("player" + (i + 1) + "name").innerHTML + goodResult;
         }
-        else if (+document.getElementById("play" + (i+1) + "OverUnder") <= 5){
-            document.getElementById("comment" + (i+1)).innerHTML = document.getElementById("player" + (i+1) + "name").innerHTML + parResult;
+        else if (+document.getElementById("play" + (i + 1) + "OverUnder").innerHTML <= 5) {
+            document.getElementById("comment" + (i + 1)).innerHTML = document.getElementById("player" + (i + 1) + "name").innerHTML + parResult;
         }
         else {
-            document.getElementById("comment" + (i+1)).innerHTML = document.getElementById("player" + (i+1) + "name").innerHTML + badResult;
+            document.getElementById("comment" + (i + 1)).innerHTML = document.getElementById("player" + (i + 1) + "name").innerHTML + badResult;
         }
     }
+    $('#results').modal('show');
 }
 function resetCard() {
     for (var i = playAdd; i > 0; i--) {
         removePlayer()
     }
-    $('#setupModal').modal({
+    if (courseLength != 9) {
+        $('#setupModal').modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: false
+        });
+    }
+    else if (courseLength == 9) {
+        onlyNine();
+    }
+}
+function newCourse() {
+    for (var i = playAdd; i > 0; i--) {
+        $('#player' + playAdd).css('display', 'none');
+        document.getElementById("player" + playAdd + "name").innerHTML = "Player" + playAdd;
+        for (var j = 1; j < 19; j++) {
+            document.getElementById("play" + playAdd + "hole" + j).value = "";
+        }
+        document.getElementById("play" + playAdd + "holeF9").innerHTML = "";
+        document.getElementById("play" + playAdd + "holeB9").innerHTML = "";
+        document.getElementById("play" + playAdd + "Total").innerHTML = "";
+        document.getElementById("play" + playAdd + "OverUnder").innerHTML = "";
+        playAdd--;
+    }
+resetYard();
+    $('#addNewPlayer').prop('disabled', false);
+    $('#courseSetConfirm').prop('disabled', true);
+    $('#setupCourse').modal({
         show: true,
         backdrop: 'static',
         keyboard: false
     });
+}
+function checkValid() {
+    var toVerify = document.getElementById("courseIDEntry").value;
+    if (toVerify.length == 5) {
+        $('#courseSetConfirm').prop('disabled', false);
+    }
+    else if (toVerify.length != 5) {
+        $('#courseSetConfirm').prop('disabled', true);
+    }
+}
+function setCourseID() {
+    var setID = +document.getElementById("courseIDEntry").value;
+    getCourse(setID);
 }
 
 ////Map will have hole and tee markers, yardage, path to next tee
@@ -306,8 +406,7 @@ if (accessToken == null) {
 }
 else {
     accessToken = accessToken.replace("\n", "");
-    getCourse(47500);
-//Pebble Beach: 13197; St. Andrews (Old Course): 51763; Thanksgiving Point: 11819; Cold Water Canyon: 47500
+    //choiceModal();
 }
 
 function getUrlVars() {
@@ -331,14 +430,31 @@ function getCourse(courseID) {
     var xhttp = new XMLHttpRequest();
     var aRequest = "https://api.swingbyswing.com/v2/courses/" + courseID + "?includes=practice_area&access_token=" + accessToken;
     xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
+        if (xhttp.status == 404) {
+            document.getElementById("courseError").innerHTML = "The course ID you entered was not found. Please try again.";
+            $('courseSetConfirm').prop('diabled', true);
+        }
+        else if (xhttp.readyState == 4 && xhttp.status == 200) {
+            $('#setupCourse').modal('hide');
             model = JSON.parse(xhttp.responseText);
             var location = model.course.location;
             initMap(location);
             document.getElementById("courseName").innerHTML = model.course.name + " Golf Course";
+            courseLength = model.course.holes.length;
             setPar();
             getYard();
             getYardTotals();
+            if (courseLength == 9) {
+                onlyNine();
+            }
+            else {
+                $('.playerSetup').css('display', 'none');
+                $('#setupModal').modal({
+                    show: true,
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }
         }
     };
     xhttp.open("GET", aRequest, true);
@@ -370,7 +486,6 @@ function hole(hn) {
     var fairway = {"lat": lati, "lng": long};
     map = new google.maps.Map(document.getElementById('map'), {
         center: fairway,
-        zoom: 16,
         mapTypeId: google.maps.MapTypeId.SATELLITE,
         scrollwheel: false,
         disableDefaultUI: true
@@ -396,6 +511,8 @@ function hole(hn) {
         title: "Green",
         icon: greenMarker
     });
-
-//         var bounds =
+    var bounds = new google.maps.LatLngBounds();
+    bounds.extend(new google.maps.LatLng (green.lat, green.lng));
+    bounds.extend(new google.maps.LatLng (tee.lat, tee.lng));
+    map.fitBounds(bounds);
 }

@@ -23,7 +23,35 @@
 
 <div id="courseName"></div>
 <div id="map"></div>
+<div class="modal fade" id="setupCourse" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title myModalLabel">Choose a Course:</h4>
+            </div>
+            <div class="modal-body">
+                <div id="courseError"></div><br>
+                <div class="row myModalInfo">
 
+                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(51763)">St. Andrews (Old Course), UK</button>
+                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(13197)">Pebble Beach, FL</button>
+                    </div>
+                <div class="row myModalInfo">
+                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(47500)">Cold Water Canyon, WI</button>
+                    <button type="button" class="btn btn-primary col-md-5" onclick="getCourse(11819)">Thanksgiving Point, UT</button>
+                </div><br>
+                <div>
+                    <label id=courseEntryLabel" for="courseIDEntry">Enter a 5-digit Swing By Swing course ID:</label>
+                    <input id="courseIDEntry" placeholder="29182" type="number" onkeyup="checkValid()"><br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="courseSetConfirm" type="button" class="btn btn-primary" disabled="disabled" onclick="setCourseID()">Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="setupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -33,53 +61,80 @@
             <div class="modal-body">
                 <div class="row myModalInfo">
 
-                    <button type="button" class="btn btn-primary col-md-3" onclick="setFull()">Full</button>
-                    <button type="button" class="btn btn-primary col-md-3" onclick="setFrontNine()">Front Nine</button>
-                    <button type="button" class="btn btn-primary col-md-3" onclick="setBackNine()">Back Nine</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="playerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title myModalLabel">Select Number of Players:</h4>
-            </div>
-            <div class="modal-body">
+                    <button type="button" class="btn btn-primary col-md-3 holeSetup" onclick="setFull()">Full</button>
+                    <button type="button" class="btn btn-primary col-md-3 holeSetup" onclick="setFrontNine()">Front Nine</button>
+                    <button type="button" class="btn btn-primary col-md-3 holeSetup" onclick="setBackNine()">Back Nine</button>
+                </div><br>
+                <div class="playerSetup"> Select number of players:</div><br>
                 <div class="row myModalInfo">
 
-                    <button type="button" id="add1" class="btn btn-primary col-md-3" onclick="addRow(1)">1</button>
-                    <button type="button" id="add2" class="btn btn-primary col-md-3" onclick="addRow(2)">2</button>
-                    <button type="button" id="add3" class="btn btn-primary col-md-3" onclick="addRow(3)">3</button>
+                    <button type="button" id="add1" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(1)">1</button>
+                    <button type="button" id="add2" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(2)">2</button>
+                    <button type="button" id="add3" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(3)">3</button>
 
-                </div>
-                <br>
-
+                </div><br>
                 <div class="row myModalInfo">
-                    <button type="button" id="add4" class="btn btn-primary col-md-3" onclick="addRow(4)">4</button>
-                    <button type="button" id="add5" class="btn btn-primary col-md-3" onclick="addRow(5)">5</button>
-                    <button type="button" id="add6" class="btn btn-primary col-md-3" onclick="addRow(6)">6</button>
-                </div>
-                <br>
+                    <button type="button" id="add4" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(4)">4</button>
+                    <button type="button" id="add5" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(5)">5</button>
+                    <button type="button" id="add6" class="btn btn-primary col-md-3 playerSetup" onclick="addRow(6)">6</button>
+                </div><br>
+                <form id="playerForm">
+                    <label id="p1NameLabel" for="p1NameEntry" class="playerEntry PElabel">Player 1 Name: </label>
+                    <input id="p1NameEntry" class="playerEntry PEinput">
+                    <select id="p1TeeEntry" class="form-control playerEntry PEselect">
+                        <option disabled selected> -- select an option -- </option>
+                        <option class="selectBlack">Pro (Black Tee)</option>
+                        <option class="selectBlue">Champion (Blue Tee)</option>
+                        <option class="selectWhite">Men (White Tee)</option>
+                        <option class="selectRed">Women (Red Tee)</option>
+                    </select>
+                    <label id="p2NameLabel" for="p2NameEntry" class="playerEntry PElabel">Player 2 Name: </label>
+                    <input id="p2NameEntry" class="playerEntry PEinput">
+                    <select id="p2TeeEntry" class="form-control playerEntry PEselect">
+                        <option disabled selected> -- select an option -- </option>
+                        <option class="selectBlack">Pro (Black Tee)</option>
+                        <option class="selectBlue">Champion (Blue Tee)</option>
+                        <option class="selectWhite">Men (White Tee)</option>
+                        <option class="selectRed">Women (Red Tee)</option>
+                    </select>
 
-                <form>
-                    <label id="p1NameLabel" for="p1NameEntry" class="playerEntry">Player 1 Name: </label>
-                    <input id="p1NameEntry" class="playerEntry"><br>
-                    <label id="p2NameLabel" for="p2NameEntry" class="playerEntry">Player 2 Name: </label>
-                    <input id="p2NameEntry" class="playerEntry"><br>
-                    <label id="p3NameLabel" for="p3NameEntry" class="playerEntry">Player 3 Name: </label>
-                    <input id="p3NameEntry" class="playerEntry"><br>
-                    <label id="p4NameLabel" for="p4NameEntry" class="playerEntry">Player 4 Name: </label>
-                    <input id="p4NameEntry" class="playerEntry"><br>
-                    <label id="p5NameLabel" for="p5NameEntry" class="playerEntry">Player 5 Name: </label>
-                    <input id="p5NameEntry" class="playerEntry"><br>
-                    <label id="p6NameLabel" for="p6NameEntry" class="playerEntry">Player 6 Name: </label>
-                    <input id="p6NameEntry" class="playerEntry"><br>
-                </form>
-            </div>
+                    <label id="p3NameLabel" for="p3NameEntry" class="playerEntry PElabel">Player 3 Name: </label>
+                    <input id="p3NameEntry" class="playerEntry PEinput">
+                    <select id="p3TeeEntry" class="form-control playerEntry PEselect">
+                        <option disabled selected> -- select an option -- </option>
+                        <option class="selectBlack">Pro (Black Tee)</option>
+                        <option class="selectBlue">Champion (Blue Tee)</option>
+                        <option class="selectWhite">Men (White Tee)</option>
+                        <option class="selectRed">Women (Red Tee)</option>
+                    </select>
+                    <label id="p4NameLabel" for="p4NameEntry" class="playerEntry PElabel">Player 4 Name: </label>
+                    <input id="p4NameEntry" class="playerEntry PEinput">
+                    <select id="p4TeeEntry" class="form-control playerEntry PEselect">
+                        <option disabled selected> -- select an option -- </option>
+                        <option class="selectBlack">Pro (Black Tee)</option>
+                        <option class="selectBlue">Champion (Blue Tee)</option>
+                        <option class="selectWhite">Men (White Tee)</option>
+                        <option class="selectRed">Women (Red Tee)</option>
+                    </select>
+                    <label id="p5NameLabel" for="p5NameEntry" class="playerEntry PElabel">Player 5 Name: </label>
+                    <input id="p5NameEntry" class="playerEntry PEinput">
+                    <select id="p5TeeEntry" class="form-control playerEntry PEselect">
+                        <option disabled selected> -- select an option -- </option>
+                        <option class="selectBlack">Pro (Black Tee)</option>
+                        <option class="selectBlue">Champion (Blue Tee)</option>
+                        <option class="selectWhite">Men (White Tee)</option>
+                        <option class="selectRed">Women (Red Tee)</option>
+                    </select><br><br>
+                    <label id="p6NameLabel" for="p6NameEntry" class="playerEntry PElabel">Player 6 Name: </label>
+                    <input id="p6NameEntry" class="playerEntry PEinput">
+                    <select id="p6TeeEntry" class="form-control playerEntry PEselect">
+                        <option class="disabled selected"> -- select an option -- </option>
+                        <option class="selectBlack">Pro (Black Tee)</option>
+                        <option class="selectBlue">Champion (Blue Tee)</option>
+                        <option class="selectWhite">Men (White Tee)</option>
+                        <option class="selectRed">Women (Red Tee)</option>
+                    </select>
+                </form></div>
             <div class="modal-footer">
 
                 <button id="modalConfirm" type="button" class="btn btn-success playerEntry" onclick="startGame()">Start
@@ -89,6 +144,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="newPlayer" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -107,15 +163,34 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="editPlayer" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title myModalLabel">Edit Player Name:</h4>
+            </div>
+            <div class="modal-body">
+                <label id="editPlayerLabel" for="editPlayerEntry">New Name: </label>
+                <input id="editPlayerEntry">
+            </div>
+            <div class="modal-footer">
+                <button id="modalEditConfirm" type="button" class="btn btn-success" onclick="finishEditPlayerName()">Add
+                    Player
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="results" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title myModalLabel" id="tieGame"></h4>
+                <h4 class="modal-title myModalLabel" id="tieGame">There was a tie.</h4>
+                <h4 class="modal-title myModalLabel" id="noWinnerGame">Every player wins!!</h4>
                 <h4 class="modal-title myModalLabel" id="winner"></h4>
             </div>
             <div class="modal-body">
-                <div>Comments:</div>
+                <div><h4>Comments:</h4></div>
                 <div id="comment1"></div>
                 <div id="comment2"></div>
                 <div id="comment3"></div>
@@ -139,25 +214,25 @@
 
             <tr id="holeNum">
                 <td class="rowTitle">Hole:</td>
-                <td id="holeSpot1" class="frontNine">1</td>
-                <td id="holeSpot2" class="frontNine">2</td>
-                <td id="holeSpot3" class="frontNine">3</td>
-                <td id="holeSpot4" class="frontNine">4</td>
-                <td id="holeSpot5" class="frontNine">5</td>
-                <td id="holeSpot6" class="frontNine">6</td>
-                <td id="holeSpot7" class="frontNine">7</td>
-                <td id="holeSpot8" class="frontNine">8</td>
-                <td id="holeSpot9" class="frontNine">9</td>
-                <td id="frontNineTotal" class="frontNine">Out</td>
-                <td id="holeSpot10" class="backNine">10</td>
-                <td id="holeSpot11" class="backNine">11</td>
-                <td id="holeSpot12" class="backNine">12</td>
-                <td id="holeSpot13" class="backNine">13</td>
-                <td id="holeSpot14" class="backNine">14</td>
-                <td id="holeSpot15" class="backNine">15</td>
-                <td id="holeSpot16" class="backNine">16</td>
-                <td id="holeSpot17" class="backNine">17</td>
-                <td id="holeSpot18" class="backNine">18</td>
+                <td id="holeSpot1" class="frontNine pointer" onClick="hole(1)">1</td>
+                <td id="holeSpot2" class="frontNine pointer" onClick="hole(2)">2</td>
+                <td id="holeSpot3" class="frontNine pointer" onClick="hole(3)">3</td>
+                <td id="holeSpot4" class="frontNine pointer" onClick="hole(4)">4</td>
+                <td id="holeSpot5" class="frontNine pointer" onClick="hole(5)">5</td>
+                <td id="holeSpot6" class="frontNine pointer" onClick="hole(6)">6</td>
+                <td id="holeSpot7" class="frontNine pointer" onClick="hole(7)">7</td>
+                <td id="holeSpot8" class="frontNine pointer" onClick="hole(8)">8</td>
+                <td id="holeSpot9" class="frontNine pointer" onClick="hole(9)">9</td>
+                <td id="frontNineTotal" class="frontNine nineHole">Out</td>
+                <td id="holeSpot10" class="backNine pointer" onClick="hole(10)">10</td>
+                <td id="holeSpot11" class="backNine pointer" onClick="hole(11)">11</td>
+                <td id="holeSpot12" class="backNine pointer" onClick="hole(12)">12</td>
+                <td id="holeSpot13" class="backNine pointer" onClick="hole(13)">13</td>
+                <td id="holeSpot14" class="backNine pointer" onClick="hole(14)">14</td>
+                <td id="holeSpot15" class="backNine pointer" onClick="hole(15)">15</td>
+                <td id="holeSpot16" class="backNine pointer" onClick="hole(16)">16</td>
+                <td id="holeSpot17" class="backNine pointer" onClick="hole(17)">17</td>
+                <td id="holeSpot18" class="backNine pointer" onClick="hole(18)">18</td>
                 <td id="backNineTotal" class="backNine">In</td>
                 <td id="scoreTotal" class="columnTotal">Total</td>
                 <td id="overUnder">+ / -</td>
@@ -165,107 +240,133 @@
             <tr id="blackTee">
                 <td>Pro:</td>
 
-                <td id="blackYard1" class="frontNine"></td>
-                <td id="blackYard2" class="frontNine"></td>
-                <td id="blackYard3" class="frontNine"></td>
-                <td id="blackYard4" class="frontNine"></td>
-                <td id="blackYard5" class="frontNine"></td>
-                <td id="blackYard6" class="frontNine"></td>
-                <td id="blackYard7" class="frontNine"></td>
-                <td id="blackYard8" class="frontNine"></td>
-                <td id="blackYard9" class="frontNine"></td>
-                <td id="blackYardF9" class="frontNine"></td>
-                <td id="blackYard10" class="backNine"></td>
-                <td id="blackYard11" class="backNine"></td>
-                <td id="blackYard12" class="backNine"></td>
-                <td id="blackYard13" class="backNine"></td>
-                <td id="blackYard14" class="backNine"></td>
-                <td id="blackYard15" class="backNine"></td>
-                <td id="blackYard16" class="backNine"></td>
-                <td id="blackYard17" class="backNine"></td>
-                <td id="blackYard18" class="backNine"></td>
+                <td id="blackYard1" class="frontNine pointer" onClick="hole(1)"></td>
+                <td id="blackYard2" class="frontNine pointer" onClick="hole(2)"></td>
+                <td id="blackYard3" class="frontNine pointer" onClick="hole(3)"></td>
+                <td id="blackYard4" class="frontNine pointer" onClick="hole(4)"></td>
+                <td id="blackYard5" class="frontNine pointer" onClick="hole(5)"></td>
+                <td id="blackYard6" class="frontNine pointer" onClick="hole(6)"></td>
+                <td id="blackYard7" class="frontNine pointer" onClick="hole(7)"></td>
+                <td id="blackYard8" class="frontNine pointer" onClick="hole(8)"></td>
+                <td id="blackYard9" class="frontNine pointer" onClick="hole(9)"></td>
+                <td id="blackYardF9" class="frontNine nineHole"></td>
+                <td id="blackYard10" class="backNine pointer" onClick="hole(10)"></td>
+                <td id="blackYard11" class="backNine pointer" onClick="hole(11)"></td>
+                <td id="blackYard12" class="backNine pointer" onClick="hole(12)"></td>
+                <td id="blackYard13" class="backNine pointer" onClick="hole(13)"></td>
+                <td id="blackYard14" class="backNine pointer" onClick="hole(14)"></td>
+                <td id="blackYard15" class="backNine pointer" onClick="hole(15)"></td>
+                <td id="blackYard16" class="backNine pointer" onClick="hole(16)"></td>
+                <td id="blackYard17" class="backNine pointer" onClick="hole(17)"></td>
+                <td id="blackYard18" class="backNine pointer" onClick="hole(18)"></td>
                 <td id="blackYardB9" class="backNine"></td>
                 <td id="blackYardTotal" class="columnTotal"></td>
                 <td></td>
             </tr>
             <tr id="blueTee">
                 <td>Champion:</td>
-                <td id="blueYard1" class="frontNine"></td>
-                <td id="blueYard2" class="frontNine"></td>
-                <td id="blueYard3" class="frontNine"></td>
-                <td id="blueYard4" class="frontNine"></td>
-                <td id="blueYard5" class="frontNine"></td>
-                <td id="blueYard6" class="frontNine"></td>
-                <td id="blueYard7" class="frontNine"></td>
-                <td id="blueYard8" class="frontNine"></td>
-                <td id="blueYard9" class="frontNine"></td>
-                <td id="blueYardF9" class="frontNine"></td>
-                <td id="blueYard10" class="backNine"></td>
-                <td id="blueYard11" class="backNine"></td>
-                <td id="blueYard12" class="backNine"></td>
-                <td id="blueYard13" class="backNine"></td>
-                <td id="blueYard14" class="backNine"></td>
-                <td id="blueYard15" class="backNine"></td>
-                <td id="blueYard16" class="backNine"></td>
-                <td id="blueYard17" class="backNine"></td>
-                <td id="blueYard18" class="backNine"></td>
+                <td id="blueYard1" class="frontNine pointer" onClick="hole(1)"></td>
+                <td id="blueYard2" class="frontNine pointer" onClick="hole(2)"></td>
+                <td id="blueYard3" class="frontNine pointer" onClick="hole(3)"></td>
+                <td id="blueYard4" class="frontNine pointer" onClick="hole(4)"></td>
+                <td id="blueYard5" class="frontNine pointer" onClick="hole(5)"></td>
+                <td id="blueYard6" class="frontNine pointer" onClick="hole(6)"></td>
+                <td id="blueYard7" class="frontNine pointer" onClick="hole(7)"></td>
+                <td id="blueYard8" class="frontNine pointer" onClick="hole(8)"></td>
+                <td id="blueYard9" class="frontNine pointer" onClick="hole(9)"></td>
+                <td id="blueYardF9" class="frontNine nineHole"></td>
+                <td id="blueYard10" class="backNine pointer" onClick="hole(10)"></td>
+                <td id="blueYard11" class="backNine pointer" onClick="hole(11)"></td>
+                <td id="blueYard12" class="backNine pointer" onClick="hole(12)"></td>
+                <td id="blueYard13" class="backNine pointer" onClick="hole(13)"></td>
+                <td id="blueYard14" class="backNine pointer" onClick="hole(14)"></td>
+                <td id="blueYard15" class="backNine pointer" onClick="hole(15)"></td>
+                <td id="blueYard16" class="backNine pointer" onClick="hole(16)"></td>
+                <td id="blueYard17" class="backNine pointer" onClick="hole(17)"></td>
+                <td id="blueYard18" class="backNine pointer" onClick="hole(18)"></td>
                 <td id="blueYardB9" class="backNine"></td>
                 <td id="blueYardTotal" class="columnTotal"></td>
                 <td></td>
             </tr>
             <tr id="whiteTee">
                 <td>Men:</td>
-                <td id="whiteYard1" class="frontNine"></td>
-                <td id="whiteYard2" class="frontNine"></td>
-                <td id="whiteYard3" class="frontNine"></td>
-                <td id="whiteYard4" class="frontNine"></td>
-                <td id="whiteYard5" class="frontNine"></td>
-                <td id="whiteYard6" class="frontNine"></td>
-                <td id="whiteYard7" class="frontNine"></td>
-                <td id="whiteYard8" class="frontNine"></td>
-                <td id="whiteYard9" class="frontNine"></td>
-                <td id="whiteYardF9" class="frontNine"></td>
-                <td id="whiteYard10" class="backNine"></td>
-                <td id="whiteYard11" class="backNine"></td>
-                <td id="whiteYard12" class="backNine"></td>
-                <td id="whiteYard13" class="backNine"></td>
-                <td id="whiteYard14" class="backNine"></td>
-                <td id="whiteYard15" class="backNine"></td>
-                <td id="whiteYard16" class="backNine"></td>
-                <td id="whiteYard17" class="backNine"></td>
-                <td id="whiteYard18" class="backNine"></td>
+                <td id="whiteYard1" class="frontNine pointer" onClick="hole(1)"></td>
+                <td id="whiteYard2" class="frontNine pointer" onClick="hole(2)"></td>
+                <td id="whiteYard3" class="frontNine pointer" onClick="hole(3)"></td>
+                <td id="whiteYard4" class="frontNine pointer" onClick="hole(4)"></td>
+                <td id="whiteYard5" class="frontNine pointer" onClick="hole(5)"></td>
+                <td id="whiteYard6" class="frontNine pointer" onClick="hole(6)"></td>
+                <td id="whiteYard7" class="frontNine pointer" onClick="hole(7)"></td>
+                <td id="whiteYard8" class="frontNine pointer" onClick="hole(8)"></td>
+                <td id="whiteYard9" class="frontNine pointer" onClick="hole(9)"></td>
+                <td id="whiteYardF9" class="frontNine nineHole"></td>
+                <td id="whiteYard10" class="backNine pointer" onClick="hole(10)"></td>
+                <td id="whiteYard11" class="backNine pointer" onClick="hole(11)"></td>
+                <td id="whiteYard12" class="backNine pointer" onClick="hole(12)"></td>
+                <td id="whiteYard13" class="backNine pointer" onClick="hole(13)"></td>
+                <td id="whiteYard14" class="backNine pointer" onClick="hole(14)"></td>
+                <td id="whiteYard15" class="backNine pointer" onClick="hole(15)"></td>
+                <td id="whiteYard16" class="backNine pointer" onClick="hole(16)"></td>
+                <td id="whiteYard17" class="backNine pointer" onClick="hole(17)"></td>
+                <td id="whiteYard18" class="backNine pointer" onClick="hole(18)"></td>
                 <td id="whiteYardB9" class="backNine"></td>
                 <td id="whiteYardTotal" class="columnTotal"></td>
                 <td></td>
             </tr>
+            <tr id="hcpNum">
+                <td class="sectionTitle">Handicap:</td>
+
+                <td id="hcp1" class="frontNine pointer" onClick="hole(1)"></td>
+                <td id="hcp2" class="frontNine pointer" onClick="hole(2)"></td>
+                <td id="hcp3" class="frontNine pointer" onClick="hole(3)"></td>
+                <td id="hcp4" class="frontNine pointer" onClick="hole(4)"></td>
+                <td id="hcp5" class="frontNine pointer" onClick="hole(5)"></td>
+                <td id="hcp6" class="frontNine pointer" onClick="hole(6)"></td>
+                <td id="hcp7" class="frontNine pointer" onClick="hole(7)"></td>
+                <td id="hcp8" class="frontNine pointer" onClick="hole(8)"></td>
+                <td id="hcp9" class="frontNine pointer" onClick="hole(9)"></td>
+                <td id="hcpF9" class="frontNine nineHole"></td>
+                <td id="hcp10" class="backNine pointer" onClick="hole(10)"></td>
+                <td id="hcp11" class="backNine pointer" onClick="hole(11)"></td>
+                <td id="hcp12" class="backNine pointer" onClick="hole(12)"></td>
+                <td id="hcp13" class="backNine pointer" onClick="hole(13)"></td>
+                <td id="hcp14" class="backNine pointer" onClick="hole(14)"></td>
+                <td id="hcp15" class="backNine pointer" onClick="hole(15)"></td>
+                <td id="hcp16" class="backNine pointer" onClick="hole(16)"></td>
+                <td id="hcp17" class="backNine pointer" onClick="hole(17)"></td>
+                <td id="hcp18" class="backNine pointer" onClick="hole(18)"></td>
+                <td id="hcpB9" class="backNine"></td>
+                <td id="hcpTotal" class="columnTotal"></td>
+                <td id="hcpOverUnder"></td>
+            </tr>
             <tr id="parNum">
                 <td class="sectionTitle">Par:</td>
 
-                <td id="par1" class="frontNine"></td>
-                <td id="par2" class="frontNine"></td>
-                <td id="par3" class="frontNine"></td>
-                <td id="par4" class="frontNine"></td>
-                <td id="par5" class="frontNine"></td>
-                <td id="par6" class="frontNine"></td>
-                <td id="par7" class="frontNine"></td>
-                <td id="par8" class="frontNine"></td>
-                <td id="par9" class="frontNine"></td>
-                <td id="parF9" class="frontNine"></td>
-                <td id="par10" class="backNine"></td>
-                <td id="par11" class="backNine"></td>
-                <td id="par12" class="backNine"></td>
-                <td id="par13" class="backNine"></td>
-                <td id="par14" class="backNine"></td>
-                <td id="par15" class="backNine"></td>
-                <td id="par16" class="backNine"></td>
-                <td id="par17" class="backNine"></td>
-                <td id="par18" class="backNine"></td>
+                <td id="par1" class="frontNine pointer" onClick="hole(1)"></td>
+                <td id="par2" class="frontNine pointer" onClick="hole(2)"></td>
+                <td id="par3" class="frontNine pointer" onClick="hole(3)"></td>
+                <td id="par4" class="frontNine pointer" onClick="hole(4)"></td>
+                <td id="par5" class="frontNine pointer" onClick="hole(5)"></td>
+                <td id="par6" class="frontNine pointer" onClick="hole(6)"></td>
+                <td id="par7" class="frontNine pointer" onClick="hole(7)"></td>
+                <td id="par8" class="frontNine pointer" onClick="hole(8)"></td>
+                <td id="par9" class="frontNine pointer" onClick="hole(9)"></td>
+                <td id="parF9" class="frontNine nineHole"></td>
+                <td id="par10" class="backNine pointer" onClick="hole(10)"></td>
+                <td id="par11" class="backNine pointer" onClick="hole(11)"></td>
+                <td id="par12" class="backNine pointer" onClick="hole(12)"></td>
+                <td id="par13" class="backNine pointer" onClick="hole(13)"></td>
+                <td id="par14" class="backNine pointer" onClick="hole(14)"></td>
+                <td id="par15" class="backNine pointer" onClick="hole(15)"></td>
+                <td id="par16" class="backNine pointer" onClick="hole(16)"></td>
+                <td id="par17" class="backNine pointer" onClick="hole(17)"></td>
+                <td id="par18" class="backNine pointer" onClick="hole(18)"></td>
                 <td id="parB9" class="backNine"></td>
                 <td id="parTotal" class="columnTotal"></td>
                 <td id="parOverUnder"></td>
             </tr>
             <tr id="player1">
-                <td id="player1name">Player 1</td>
+                <td id="player1name" onclick="startEditPlayerName(1)">Player 1</td>
 
                 <td class="frontNine"><input id="play1hole1" type="number" onblur="calcScore(1)"></td>
                 <td class="frontNine"><input id="play1hole2" type="number" onblur="calcScore(1)"></td>
@@ -276,7 +377,7 @@
                 <td class="frontNine"><input id="play1hole7" type="number" onblur="calcScore(1)"></td>
                 <td class="frontNine"><input id="play1hole8" type="number" onblur="calcScore(1)"></td>
                 <td class="frontNine"><input id="play1hole9" type="number" onblur="calcScore(1)"></td>
-                <td id="play1holeF9" class="frontNine"></td>
+                <td id="play1holeF9" class="frontNine nineHole"></td>
                 <td class="backNine"><input id="play1hole10" type="number" onblur="calcScore(1)"></td>
                 <td class="backNine"><input id="play1hole11" type="number" onblur="calcScore(1)"></td>
                 <td class="backNine"><input id="play1hole12" type="number" onblur="calcScore(1)"></td>
@@ -291,7 +392,7 @@
                 <td id="play1OverUnder"></td>
             </tr>
             <tr id="player2">
-                <td id="player2name">Player 2</td>
+                <td id="player2name" onclick="startEditPlayerName(2)">Player 2</td>
                 <td class="frontNine"><input id="play2hole1" type="number" onblur="calcScore(2)"></td>
                 <td class="frontNine"><input id="play2hole2" type="number" onblur="calcScore(2)"></td>
                 <td class="frontNine"><input id="play2hole3" type="number" onblur="calcScore(2)"></td>
@@ -301,7 +402,7 @@
                 <td class="frontNine"><input id="play2hole7" type="number" onblur="calcScore(2)"></td>
                 <td class="frontNine"><input id="play2hole8" type="number" onblur="calcScore(2)"></td>
                 <td class="frontNine"><input id="play2hole9" type="number" onblur="calcScore(2)"></td>
-                <td id="play2holeF9" class="frontNine"></td>
+                <td id="play2holeF9" class="frontNine nineHole"></td>
                 <td class="backNine"><input id="play2hole10" type="number" onblur="calcScore(2)"></td>
                 <td class="backNine"><input id="play2hole11" type="number" onblur="calcScore(2)"></td>
                 <td class="backNine"><input id="play2hole12" type="number" onblur="calcScore(2)"></td>
@@ -317,7 +418,7 @@
             </tr>
 
             <tr id="player3">
-                <td id="player3name">Player 3</td>
+                <td id="player3name" onclick="startEditPlayerName(3)">Player 3</td>
                 <td class="frontNine"><input id="play3hole1" type="number" onblur="calcScore(3)"></td>
                 <td class="frontNine"><input id="play3hole2" type="number" onblur="calcScore(3)"></td>
                 <td class="frontNine"><input id="play3hole3" type="number" onblur="calcScore(3)"></td>
@@ -327,7 +428,7 @@
                 <td class="frontNine"><input id="play3hole7" type="number" onblur="calcScore(3)"></td>
                 <td class="frontNine"><input id="play3hole8" type="number" onblur="calcScore(3)"></td>
                 <td class="frontNine"><input id="play3hole9" type="number" onblur="calcScore(3)"></td>
-                <td id="play3holeF9" class="frontNine"></td>
+                <td id="play3holeF9" class="frontNine nineHole"></td>
                 <td class="backNine"><input id="play3hole10" type="number" onblur="calcScore(3)"></td>
                 <td class="backNine"><input id="play3hole11" type="number" onblur="calcScore(3)"></td>
                 <td class="backNine"><input id="play3hole12" type="number" onblur="calcScore(3)"></td>
@@ -342,7 +443,7 @@
                 <td id="play3OverUnder"></td>
             </tr>
             <tr id="player4">
-                <td id="player4name">Player 4</td>
+                <td id="player4name" onclick="startEditPlayerName(4)">Player 4</td>
                 <td class="frontNine"><input id="play4hole1" type="number" onblur="calcScore(4)"></td>
                 <td class="frontNine"><input id="play4hole2" type="number" onblur="calcScore(4)"></td>
                 <td class="frontNine"><input id="play4hole3" type="number" onblur="calcScore(4)"></td>
@@ -352,7 +453,7 @@
                 <td class="frontNine"><input id="play4hole7" type="number" onblur="calcScore(4)"></td>
                 <td class="frontNine"><input id="play4hole8" type="number" onblur="calcScore(4)"></td>
                 <td class="frontNine"><input id="play4hole9" type="number" onblur="calcScore(4)"></td>
-                <td id="play4holeF9" class="frontNine"></td>
+                <td id="play4holeF9" class="frontNine nineHole"></td>
                 <td class="backNine"><input id="play4hole10" type="number" onblur="calcScore(4)"></td>
                 <td class="backNine"><input id="play4hole11" type="number" onblur="calcScore(4)"></td>
                 <td class="backNine"><input id="play4hole12" type="number" onblur="calcScore(4)"></td>
@@ -367,7 +468,7 @@
                 <td id="play4OverUnder"></td>
             </tr>
             <tr id="player5">
-                <td id="player5name">Player 5</td>
+                <td id="player5name" onclick="startEditPlayerName(5)">Player 5</td>
                 <td class="frontNine"><input id="play5hole1" type="number" onblur="calcScore(5)"></td>
                 <td class="frontNine"><input id="play5hole2" type="number" onblur="calcScore(5)"></td>
                 <td class="frontNine"><input id="play5hole3" type="number" onblur="calcScore(5)"></td>
@@ -377,7 +478,7 @@
                 <td class="frontNine"><input id="play5hole7" type="number" onblur="calcScore(5)"></td>
                 <td class="frontNine"><input id="play5hole8" type="number" onblur="calcScore(5)"></td>
                 <td class="frontNine"><input id="play5hole9" type="number" onblur="calcScore(5)"></td>
-                <td id="play5holeF9" class="frontNine"></td>
+                <td id="play5holeF9" class="frontNine nineHole"></td>
                 <td class="backNine"><input id="play5hole10" type="number" onblur="calcScore(5)"></td>
                 <td class="backNine"><input id="play5hole11" type="number" onblur="calcScore(5)"></td>
                 <td class="backNine"><input id="play5hole12" type="number" onblur="calcScore(5)"></td>
@@ -392,7 +493,7 @@
                 <td id="play5OverUnder"></td>
             </tr>
             <tr id="player6">
-                <td id="player6name">Player 6</td>
+                <td id="player6name" onclick="startEditPlayerName(6)">Player 6</td>
                 <td class="frontNine"><input id="play6hole1" type="number" onblur="calcScore(6)"></td>
                 <td class="frontNine"><input id="play6hole2" type="number" onblur="calcScore(6)"></td>
                 <td class="frontNine"><input id="play6hole3" type="number" onblur="calcScore(6)"></td>
@@ -402,7 +503,7 @@
                 <td class="frontNine"><input id="play6hole7" type="number" onblur="calcScore(6)"></td>
                 <td class="frontNine"><input id="play6hole8" type="number" onblur="calcScore(6)"></td>
                 <td class="frontNine"><input id="play6hole9" type="number" onblur="calcScore(6)"></td>
-                <td id="play6holeF9" class="frontNine"></td>
+                <td id="play6holeF9" class="frontNine nineHole"></td>
                 <td class="backNine"><input id="play6hole10" type="number" onblur="calcScore(6)"></td>
                 <td class="backNine"><input id="play6hole11" type="number" onblur="calcScore(6)"></td>
                 <td class="backNine"><input id="play6hole12" type="number" onblur="calcScore(6)"></td>
@@ -417,7 +518,7 @@
                 <td id="play6OverUnder"></td>
             </tr>
             <tr id="player7">
-                <td id="player7name">Player 7</td>
+                <td id="player7name" onclick="startEditPlayerName(7)">Player 7</td>
                 <td class="frontNine"><input id="play7hole1" type="number" onblur="calcScore(7)"></td>
                 <td class="frontNine"><input id="play7hole2" type="number" onblur="calcScore(7)"></td>
                 <td class="frontNine"><input id="play7hole3" type="number" onblur="calcScore(7)"></td>
@@ -427,7 +528,7 @@
                 <td class="frontNine"><input id="play7hole7" type="number" onblur="calcScore(7)"></td>
                 <td class="frontNine"><input id="play7hole8" type="number" onblur="calcScore(7)"></td>
                 <td class="frontNine"><input id="play7hole9" type="number" onblur="calcScore(7)"></td>
-                <td id="play7holeF9" class="frontNine"></td>
+                <td id="play7holeF9" class="frontNine nineHole"></td>
                 <td class="backNine"><input id="play7hole10" type="number" onblur="calcScore(7)"></td>
                 <td class="backNine"><input id="play7hole11" type="number" onblur="calcScore(7)"></td>
                 <td class="backNine"><input id="play7hole12" type="number" onblur="calcScore(7)"></td>
@@ -443,7 +544,7 @@
 
             </tr>
             <tr id="player8">
-                <td id="player8name">Player 8</td>
+                <td id="player8name" onclick="startEditPlayerName(8)">Player 8</td>
                 <td class="frontNine"><input id="play8hole1" type="number" onblur="calcScore(8)"></td>
                 <td class="frontNine"><input id="play8hole2" type="number" onblur="calcScore(8)"></td>
                 <td class="frontNine"><input id="play8hole3" type="number" onblur="calcScore(8)"></td>
@@ -453,7 +554,7 @@
                 <td class="frontNine"><input id="play8hole7" type="number" onblur="calcScore(8)"></td>
                 <td class="frontNine"><input id="play8hole8" type="number" onblur="calcScore(8)"></td>
                 <td class="frontNine"><input id="play8hole9" type="number" onblur="calcScore(8)"></td>
-                <td id="play8holeF9" class="frontNine"></td>
+                <td id="play8holeF9" class="frontNine nineHole"></td>
                 <td class="backNine"><input id="play8hole10" type="number" onblur="calcScore(8)"></td>
                 <td class="backNine"><input id="play8hole11" type="number" onblur="calcScore(8)"></td>
                 <td class="backNine"><input id="play8hole12" type="number" onblur="calcScore(8)"></td>
@@ -474,25 +575,25 @@
 
             <tr id="redTee">
                 <td>Women:</td>
-                <td id="redYard1" class="frontNine"></td>
-                <td id="redYard2" class="frontNine"></td>
-                <td id="redYard3" class="frontNine"></td>
-                <td id="redYard4" class="frontNine"></td>
-                <td id="redYard5" class="frontNine"></td>
-                <td id="redYard6" class="frontNine"></td>
-                <td id="redYard7" class="frontNine"></td>
-                <td id="redYard8" class="frontNine"></td>
-                <td id="redYard9" class="frontNine"></td>
-                <td id="redYardF9" class="frontNine"></td>
-                <td id="redYard10" class="backNine"></td>
-                <td id="redYard11" class="backNine"></td>
-                <td id="redYard12" class="backNine"></td>
-                <td id="redYard13" class="backNine"></td>
-                <td id="redYard14" class="backNine"></td>
-                <td id="redYard15" class="backNine"></td>
-                <td id="redYard16" class="backNine"></td>
-                <td id="redYard17" class="backNine"></td>
-                <td id="redYard18" class="backNine"></td>
+                <td id="redYard1" class="frontNine pointer" onClick="hole(1)"></td>
+                <td id="redYard2" class="frontNine pointer" onClick="hole(2)"></td>
+                <td id="redYard3" class="frontNine pointer" onClick="hole(3)"></td>
+                <td id="redYard4" class="frontNine pointer" onClick="hole(4)"></td>
+                <td id="redYard5" class="frontNine pointer" onClick="hole(5)"></td>
+                <td id="redYard6" class="frontNine pointer" onClick="hole(6)"></td>
+                <td id="redYard7" class="frontNine pointer" onClick="hole(7)"></td>
+                <td id="redYard8" class="frontNine pointer" onClick="hole(8)"></td>
+                <td id="redYard9" class="frontNine pointer" onClick="hole(9)"></td>
+                <td id="redYardF9" class="frontNine nineHole"></td>
+                <td id="redYard10" class="backNine pointer" onClick="hole(10)"></td>
+                <td id="redYard11" class="backNine pointer" onClick="hole(11)"></td>
+                <td id="redYard12" class="backNine pointer" onClick="hole(12)"></td>
+                <td id="redYard13" class="backNine pointer" onClick="hole(13)"></td>
+                <td id="redYard14" class="backNine pointer" onClick="hole(14)"></td>
+                <td id="redYard15" class="backNine pointer" onClick="hole(15)"></td>
+                <td id="redYard16" class="backNine pointer" onClick="hole(16)"></td>
+                <td id="redYard17" class="backNine pointer" onClick="hole(17)"></td>
+                <td id="redYard18" class="backNine pointer" onClick="hole(18)"></td>
                 <td id="redYardB9" class="backNine"></td>
                 <td id="redYardTotal" class="columnTotal"></td>
                 <td></td>
@@ -503,6 +604,7 @@
 
 <button class="cardOptions btn btn-success" id="addNewPlayer" onclick="startAddPlayer()">Add Player</button>
 <button class="cardOptions btn btn-danger" id="removeLastPlayer" onclick="removePlayer()">Remove Player</button>
+<button class="cardOptions btn btn-danger" id="resetEverything" onclick="newCourse()">Select New Course</button>
 <button class="cardOptions btn btn-info" id="toggle" onclick="toggleView()">Switch Front / Back Nine</button>
 <button class="btn btn-danger" id="finishGame" onclick="endGame()">Finish Round</button>
 <button class="btn btn-warning" id="resetGame" onclick="resetCard()">Reset Scorecard</button>
