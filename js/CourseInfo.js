@@ -524,11 +524,27 @@ function initMap(myLatLng) {
 }
 
 function hole(hn) {
+    var lastGreen = "";
+    var nextTee = "";
+    if (hn == 1){
+        lastGreen = model.course.location;
+        nextTee = model.course.holes[hn].tee_boxes[0].location;
+    }
+    else if (hn == 18){
+        lastGreen = model.course.holes[hn - 2].green_location;
+        nextTee = model.course.location;
+    }
+    else {
+        lastGreen = model.course.holes[hn - 2].green_location;
+        nextTee = model.course.holes[hn].tee_boxes[0].location;
+    }
     var green = model.course.holes[hn - 1].green_location;
     var tee = model.course.holes[hn - 1].tee_boxes[0].location;
     var lati = (green.lat + tee.lat) / 2;
     var long = (green.lng + tee.lng) / 2;
     var fairway = {"lat": lati, "lng": long};
+    var fromLastGreen = [lastGreen, tee];
+    var toNextTee = [green, nextTee];
     map = new google.maps.Map(document.getElementById('map'), {
         center: fairway,
         mapTypeId: google.maps.MapTypeId.SATELLITE,
@@ -555,6 +571,22 @@ function hole(hn) {
         map: map,
         title: "Green",
         icon: greenMarker
+    });
+    var firstPath = new google.maps.Polyline({
+        path: fromLastGreen,
+        geodesic: true,
+        strokeColor: 'white',
+        strokeOpacity: 0.7,
+        strokeWeight: 1.75,
+        map: map
+    });
+    var lastPath = new google.maps.Polyline({
+        path: toNextTee,
+        geodesic: true,
+        strokeColor: 'white',
+        strokeOpacity: 0.7,
+        strokeWeight: 1.75,
+        map: map
     });
     var bounds = new google.maps.LatLngBounds();
     bounds.extend(new google.maps.LatLng(green.lat, green.lng));
