@@ -1,11 +1,8 @@
-var numberOfHoles = 9;
-var holeText = "";
-var playAdd = 0;
-var select = "";
-var firstHoles = true;
-var courseLength = 0;
-var editNum = 0
-
+var playAdd = 0; //Retains the number of players listed so the add player or remove player adjusts the correct scorecard row.
+var firstHoles = true; //Placeholder for the front/back toggle button.
+var courseLength = 0; //Placeholder that is set by the JSON holes array, determines if 9 or 18 hole course.
+var editNum = 0; //Set on player name edit start, retains player number that is being edited so the finish edit can run properly.
+//On load, shows the course selection modal and disables the confirm/close on the modal until the 5 digit course ID is entered.
 $(window).load(function () {
     $('courseSetConfirm').prop('diabled', true);
     $('#setupCourse').modal({
@@ -14,18 +11,20 @@ $(window).load(function () {
         keyboard: false
     });
 });
-
+//Set to prevent mousewheel from changing the number on the score inputs.
 $(':input[type=number]').on('mousewheel', function (e) {
     e.preventDefault();
 });
-
+//Runs when initializing the scorecard, new course is chosen, scorecard is reset, or last player is removed (same as a reset).
 function hideYardRows() {
     $('#blackTee').css('display', 'none');
     $('#blueTee').css('display', 'none');
     $('#whiteTee').css('display', 'none');
     $('#redTee').css('display', 'none');
 }
-
+//Runs when the Full option is selected, available after the course is set or the card is reset.
+//Displays the toggle front/back button, displays the Player setup section, disables the Full/Front/Back options.
+//Starts with the front nine holes showing, includes the Total columns.
 function setFull() {
     $('#toggle').css('display', 'inline-block');
     $('.frontNine').css('display', 'table-cell');
@@ -34,7 +33,9 @@ function setFull() {
     $('.playerSetup').prop('disabled', false);
     $('.holeSetup').prop('disabled', true);
 }
-
+//Runs when the Front 9 option is selected, available after the course is set or the card is reset.
+//Displays the Player setup section, disables the Full/Front/Back options.
+//Hides the total columns, relies on the Out/In for totals.
 function setFrontNine() {
     $('.frontNine').css('display', 'table-cell');
     $('.backNine').css('display', 'none');
@@ -43,7 +44,9 @@ function setFrontNine() {
     $('.playerSetup').prop('disabled', false);
     $('.holeSetup').prop('disabled', true);
 }
-
+//Runs when the Back 9 option is selected, available after the course is set or the card is reset.
+//Displays the Player setup section, disables the Full/Front/Back options.
+//Hides the total columns, relies on the Out/In for totals.
 function setBackNine() {
     $('.backNine').css('display', 'table-cell');
     $('.frontNine').css('display', 'none');
@@ -52,7 +55,9 @@ function setBackNine() {
     $('.playerSetup').prop('disabled', false);
     $('.holeSetup').prop('disabled', true);
 }
-
+//Runs automatically if the selected course only has 9 holes, not a full 18.
+//Hides Out, replaces with Total columns.
+//Skips the Full/Front/Back section of setup modal, goes straight to Player setup.
 function onlyNine() {
     $('.holeSetup').css('display', 'none');
     $('.frontNine').css('display', 'table-cell');
@@ -67,7 +72,8 @@ function onlyNine() {
         keyboard: false
     });
 }
-
+//Allows the toggle button to switch the displayed columns from front to back (as many times as desired).
+//Only shows if the user has the Full course selected.
 function toggleView() {
     if (firstHoles) {
         $('.frontNine').css('display', 'none');
@@ -80,6 +86,8 @@ function toggleView() {
         firstHoles = true;
     }
 }
+//Displays the desired number of player setup (name/tee) rows based on the number of players selected.
+//Disables the player number options so the function cannot be run multiple times.
 function addRow(n) {
     $('.playerEntryInst').css('display', 'block');
     for (var i = 0; i < n; i++) {
@@ -92,9 +100,13 @@ function addRow(n) {
     $('.playerSetup').prop('disabled', true);
     $('#modalConfirm').css('display', 'inline-block');
 }
+//Runs when the tee is selected for Player 1, enables button to allow game to start.
 function activateStart() {
     $('#modalConfirm').prop('disabled', false)
 }
+//As it says, starts the game. Runs when the setup modal is complete (last step adding a tee for at least Player 1).
+//Hides the modal sections so the user will step through same every time (cannot skip to Player entry).
+//Sets up the scorecard with player names and displays only the selected tee information.
 function startGame() {
     $('.playerEntryInst').css('display', 'none');
     $('.playerEntry').css('display', 'none');
@@ -131,6 +143,7 @@ function startGame() {
     }
     $('#setupModal').modal('hide');
 }
+//Runs when the Add Player button is clicked, opens modal and finds the player number to adjust correct row.
 function startAddPlayer() {
     $('#newPlayer').modal({
         show: true,
@@ -139,6 +152,8 @@ function startAddPlayer() {
     });
     $('#player' + (playAdd + 1)).css('display', 'table-row');
 }
+//Actually adds the player after information set.
+//Disables the Add Player if max reached, sets name, shows tee row (if not already displayed).
 function finishAddPlayer() {
     playAdd++;
     if (playAdd == 8) {
@@ -167,6 +182,7 @@ function finishAddPlayer() {
     document.getElementById("newTeeEntry").value = "";
     document.getElementById("newPlayerEntry").value = "";
 }
+//Runs when the player name td is clicked, opens modal to accept the new name.
 function startEditPlayerName(n) {
     $('#editPlayer').modal({
         show: true,
@@ -176,17 +192,15 @@ function startEditPlayerName(n) {
     document.getElementById("editPlayerEntry").value = document.getElementById("player" + n + "name").innerHTML;
     editNum = n;
 }
-
+//Finishes the player name edit (actually adjusts the name), using the editNum stored in the startEditPlayerName function.
 function finishEditPlayerName() {
     document.getElementById("player" + editNum + "name").innerHTML = document.getElementById("editPlayerEntry").value;
     $('#editPlayer').modal('hide');
 }
-
+//Removes the last player row and reduces playAdd to verify next one added is same as removed (cannot skip player row).
+//Resets all scores and totals, removes name, hides row.
+//If it was the last player that is removed, functions same as reset card - prompts for hole count, etc.
 function removePlayer() {
-    if (playAdd == 0) {
-        return;
-    }
-    else {
         $('#player' + playAdd).css('display', 'none');
         document.getElementById("player" + playAdd + "name").innerHTML = "Player" + playAdd;
         for (var i = 1; i < 19; i++) {
@@ -197,7 +211,6 @@ function removePlayer() {
         document.getElementById("play" + playAdd + "Total").innerHTML = "";
         document.getElementById("play" + playAdd + "OverUnder").innerHTML = "";
 
-    }
     playAdd--;
     $('#addNewPlayer').prop('disabled', false);
     if (playAdd == 0 && courseLength != 9) {
@@ -213,7 +226,7 @@ function removePlayer() {
         onlyNine();
     }
 }
-
+//Runs when course is set, just finds Par values and populates the Par row.
 function setPar() {
     var holeCount = model.course.holes.length;
     for (var i = 0; i < holeCount; i++) {
@@ -227,7 +240,10 @@ function setPar() {
         document.getElementById("parB9").innerHTML = model.course.tee_types[0].back_nine_par;
     }
 }
-
+//Runs when the course is set.
+//Finds the available tee information, sets yardage values for each tee row.
+//Hides any tee from the player's tee choices if yardage not available.
+//Also checks for handicap information and populates / displays handicap row if available.
 function getYard() {
     var path = model.course.holes;
     for (var i = 0; i < path.length; i++) {
@@ -267,6 +283,8 @@ function getYard() {
 
     }
 }
+//Same as previous function, but pulls the course information without going into the holes.
+//Sets front 9 / back 9 / full yardage totals for the available tees.
 function getYardTotals() {
     var path = model.course.tee_types;
     for (var i = 0; i < path.length; i++) {
@@ -292,6 +310,7 @@ function getYardTotals() {
         }
     }
 }
+//Runs when a new course is selected to clear the available tee list on player select and hide all rows so only the new selected tees display.
 function resetYard() {
     $('#blackTee').css('display', 'none');
     $('.selectBlack').css('display', 'inline-block');
@@ -308,6 +327,7 @@ function resetYard() {
     document.getElementById("whiteYard1").innerHTML = "";
     document.getElementById("redYard1").innerHTML = "";
 }
+//Runs on score entry blur, calculates front 9, back 9, and full course totals.
 function calcScore(n) {
     var f9Total = 0;
     var b9Total = 0;
@@ -322,6 +342,7 @@ function calcScore(n) {
     document.getElementById("play" + n + "Total").innerHTML = String(f9Total + b9Total);
     calcOverUnder(n)
 }
+//Run on score entry blur as part of calcScore, compares the par for entered holes with the entered amount and displays running +/- total.
 function calcOverUnder(x) {
     var final = 0;
     var finalStroke = 0;
@@ -335,6 +356,9 @@ function calcOverUnder(x) {
     }
     return document.getElementById("play" + x + "OverUnder").innerHTML = final
 }
+//Opens modal to display winner's name based on lowest score as well as comments for individual performance.
+//Can be run at any time, did not set it to run when all scores filled in and did not disable the option until all scores were entered.
+//Also checks if there is only one player or if there was a tie and changes winner text based on those results.
 function endGame() {
     $('#tieGame').css('display', 'none');
     $('#noWinnerGame').css('display', 'none');
@@ -384,6 +408,8 @@ function endGame() {
     }
     $('#results').modal('show');
 }
+//Removes all players, resets all scores, and hides all tee rows.
+//Starts a new game on the same course, automatically opens setup modal to start the next round.
 function resetCard() {
     for (var i = playAdd; i > 0; i--) {
         removePlayer()
@@ -401,6 +427,7 @@ function resetCard() {
         onlyNine();
     }
 }
+//Resets everything and opens the course select modal - functions the same as opening or refreshing the page.
 function newCourse() {
     for (var i = playAdd; i > 0; i--) {
         $('#player' + playAdd).css('display', 'none');
@@ -423,6 +450,7 @@ function newCourse() {
         keyboard: false
     });
 }
+//Does not allow the manually entered course ID to be run in the getCourse function unless it meets the length requirement (5 digits).
 function checkValid() {
     var toVerify = document.getElementById("courseIDEntry").value;
     if (toVerify.length == 5) {
@@ -432,13 +460,13 @@ function checkValid() {
         $('#courseSetConfirm').prop('disabled', true);
     }
 }
+//Pulls the entered course ID and runs the getCourse with that ID.
+//Only runs for the manually entered ID, the buttons skip this function and run getCourse with a predefined parameter.
 function setCourseID() {
     var setID = +document.getElementById("courseIDEntry").value;
     getCourse(setID);
 }
-
-////Map will have hole and tee markers, yardage, path to next tee
-
+//Setup the swingbyswing api.
 var clientID = "64f8ab8b-326b-4b4c-9d5f-10b4abf65d9c";
 var accessToken, model, map;
 var redirectURI = document.URL;
@@ -449,9 +477,7 @@ if (accessToken == null) {
 }
 else {
     accessToken = accessToken.replace("\n", "");
-    //choiceModal();
 }
-
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
@@ -460,15 +486,11 @@ function getUrlVars() {
         });
     return vars;
 }
-
-//    https://api.swingbyswing.com/v2/courses/18300?includes=practice_area,nearby_courses,recent_media,recent_comments,recent_rounds,best_rounds,current_rounds,course_stats_month,course_stats_year&access_token={access_token}
-//https://api.swingbyswing.com/v2/courses/" + courseID + "?includes=practice_area&access_token=" + accessToken
-function Map() {
-    this.showLocation();
-    {
-
-    }
-}
+//This does most of the work.
+//Sets up the JSON to pull the par, yards, handicap, and hole/tee locations.
+//Checks for course ID to exist, stays on the course select modal and displays error if it does not.
+//Runs multiple setup functions (including setPar, getYard, getYardTotals) and sets up next modal (with onlyNine if necessary).
+//Establishes location for the map.
 function getCourse(courseID) {
     var xhttp = new XMLHttpRequest();
     var aRequest = "https://api.swingbyswing.com/v2/courses/" + courseID + "?includes=practice_area&access_token=" + accessToken;
@@ -505,7 +527,9 @@ function getCourse(courseID) {
     xhttp.open("GET", aRequest, true);
     xhttp.send();
 }
-
+//Creates the map, centered on the clubhouse location from the JSON.
+//Sets map properties that I want (hide UI, Satellite, no scrollwheel zoom).
+//Marker is default, only use custom for the holes (tee and green).
 function initMap(myLatLng) {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
@@ -513,16 +537,20 @@ function initMap(myLatLng) {
         mapTypeId: google.maps.MapTypeId.SATELLITE,
         scrollwheel: false,
         disableDefaultUI: true
-        // set bounds
     });
-
     var marker = new google.maps.Marker({
         position: myLatLng,
         map: map,
         title: "Clubhouse"
     });
 }
-
+//Runs when a hole number, par, yardage, or handicap td is clicked.
+//Centers map on fairway (halfway between tee and green).
+//Custom markers, ball on tee for tee - flag for green.
+//Sets bounds on the tee/green to establish zoom for the map.
+//Polylines show the path from green to tee from previous hole and to next hole (starting and ending with clubhouse).
+//Rubric note:
+//Did not accomplish the map adjustment for each tee type/color. Every tee row will pull the same tee location and will not adjust the map for the different yardages.
 function hole(hn) {
     var lastGreen = "";
     var nextTee = "";

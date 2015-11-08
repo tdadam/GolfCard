@@ -2,222 +2,198 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: black;
 }
-
 #courseName {
+    height: 200px;
     text-align: center;
+    font-size: 38pt;
+    font-family: fantasy;
+    background-image: url("../images/GolfHeader1.png");
+    background-size: 100% 100%;
+    padding-top: 75px;
+    text-shadow: 2px 2px white;
 }
-
 #map {
-    height: 50%;
+    height: 40%;
     width: 100%;
-
 }
-
+/*Set table to leave room on either side of the window.*/
 table {
     width: 98%;
     border-collapse: collapse;
-    margin: auto;
-    border-bottom: solid 2pt black;
-    border-left: solid 2pt black;
-    border-right: solid 2pt black;
-}
-
-#headTable {
-    border-top: solid 2pt black;
     margin: 10px auto 0 auto;
+    border: solid 2pt black;
 }
-
-#holeNum {
-    background-color: forestgreen;
-    color: white;
-}
-
 tr td {
     border: solid 2pt black;
 }
-
 td {
     height: 30px;
     text-align: center;
 }
-
+/*The next 7 ID styles are to set the row colors in the table.
+Most of the following styles also set the display to None, the functions in the js will display only those rows that are available or used.*/
+#holeNum {
+    background-color: forestgreen;
+    color: white;
+}
 #blackTee {
     background-color: black;
     color: white;
     display: none;
 }
-
 #blueTee {
     background-color: blue;
     color: white;
     display: none;
 }
-
 #whiteTee {
     background-color: white;
     display: none;
 }
-
 #redTee {
     display: none;
     background-color: red;
     color: white;
 }
-
 #parNum {
     background-color: cornsilk;
 }
-
-#player1 {
+#hcpNum {
+    background-color: #6d6a6a;
+    color: white;
     display: none;
 }
-
+#player1 {
+    display: none;
+    background-color: white;
+}
 #player2 {
     display: none;
     background-color: azure;
 }
-
 #player3 {
     display: none;
+    background-color: white;
 }
-
 #player4 {
     display: none;
     background-color: azure;
 }
-
 #player5 {
     display: none;
+    background-color: white;
 }
-
 #player6 {
     display: none;
     background-color: azure;
 }
-
 #player7 {
     display: none;
+    background-color: white;
 }
-
 #player8 {
     display: none;
     background-color: azure;
 }
-
+/*Show or hide the switch front/back nine option on a full course.*/
 #toggle {
     display: none;
 }
-
+/*Columns have the following classes to allow them to show/hide based on course selection (front/back/full).*/
 .frontNine {
     display: none;
 }
-
 .backNine {
     display: none;
 }
-
+/*Trying to get the bootstrap buttons to position correctly.*/
 .col-md-4 {
     margin: auto;
-
 }
-
+.col-md-5 {
+    margin: auto;
+    padding: 5px;
+}
+.col-md-3 {
+    margin: auto;
+    padding: 5px;
+}
+/*More bootstrap position work.*/
 .myModalInfo {
     display: flex;
     align-content: space-around;
     margin: 0 auto;
 }
-
-.col-md-5 {
-    margin: auto;
-    padding: 5px;
-}
-
-.col-md-3 {
-    margin: auto;
-    padding: 5px;
-}
-
+/*Buttons on the bottom of the card.*/
 .cardOptions {
     margin: 15px;
 }
-
 .playerEntry {
     display: none;
 }
-
+/*Keeping the scorecard entry uniform.*/
 td input {
     width: 30px;
     height: 25px;
     margin: auto;
     text-align: center;
 }
-
+/*Floating these two options away from the other buttons, attempt to keep on same row.*/
 #resetGame {
     margin: 15px;
     float: right;
 }
-
 #finishGame {
     margin: 15px;
     float: right;
 }
-
+/*Removing the buttons on the score inputs while maintaining number only entry.*/
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-
+/*Show/hide the header based on game result.*/
 #tieGame {
     display: none;
 }
-
 #noWinnerGame {
     display: none;
 }
-
+/*Allowing cursor change to indicate a td other than input that will run a function.*/
 .pointer:hover {
     cursor: pointer;
 }
-
-#hcpNum {
-    background-color: #6d6a6a;
-    color: white;
-    display: none;
-}
-
+/*Warns user of an invalid swingbyswing course ID.*/
 #courseError {
     color: red;
 }
-
+/*All PE: player entry positioning for setup modal.*/
 .PElabel {
     padding-top: 5px;
     float: left;
     margin-bottom: 10px;
 }
-
 .PEinput {
     float: left;
     width: 200px;
     margin: 0 0 10px 15px;
     padding: 5px 0 5px 0;
 }
-
 .PEselect {
     float: right;
     width: 200px;
     margin-bottom: 10px;
 }
-
+/*Forces the section to expand to fit the information, does not close div too early.*/
 #playerForm {
     overflow: hidden;
 }
-
 #newPlayerForm {
     overflow: hidden;
 }
-
 .playerEntryInst {
     display: none;
 }

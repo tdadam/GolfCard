@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-<!---->
+<!--Added Bootstrap for modals and default styles and jquery for css and prop changes-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
           integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
           crossorigin="anonymous">
@@ -19,10 +19,12 @@
     <link href="Style.css" rel="stylesheet"/>
 </head>
 <body>
-<!-- Button trigger modal -->
-
+<!--Overall layout for this file: title, map, all modals, scorecard table, buttons.
+Top div just shows the name of the selected course, pulled from the JSON-->
 <div id="courseName"></div>
+<!--Map holder-->
 <div id="map"></div>
+<!--This modal opens on page load, prompts user for course selection-->
 <div class="modal fade" id="setupCourse" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -55,17 +57,21 @@
 
                 <div>
                     <label id=courseEntryLabel" for="courseIDEntry">Enter a 5-digit Swing By Swing course ID:</label>
+                    <!--Placeholder was a valid ID for a nine-hole course that I used in testing.-->
                     <input id="courseIDEntry" placeholder="29182" type="number" onkeyup="checkValid()"><br>
                 </div>
             </div>
             <div class="modal-footer">
                 <button id="courseSetConfirm" type="button" class="btn btn-primary" disabled="disabled"
                         onclick="setCourseID()">Submit
+                    <!--setCourse function pulls the 5 digit value and runs getCourse with that parameter-->
                 </button>
             </div>
         </div>
     </div>
 </div>
+<!--This next modal opens every time getCourse runs, the last player is removed, or the scorecard is reset.
+Prompts for hole count (front/back/full) if an 18 hole course then prompts for player information (number / name / tee).-->
 <div class="modal fade" id="setupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -180,7 +186,7 @@
         </div>
     </div>
 </div>
-
+<!--This modal will run when a new player is added, checks for name and tee.-->
 <div class="modal fade" id="newPlayer" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -208,6 +214,7 @@
         </div>
     </div>
 </div>
+<!--Modal is almost identical to Add Player, but does not prompt for tee - only the name.-->
 <div class="modal fade" id="editPlayer" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -226,6 +233,8 @@
         </div>
     </div>
 </div>
+<!--Modal to display results when the option is selected to finish the game.
+Will display individual results with a comment and the overall winner (or tie) in the header.-->
 <div class="modal fade" id="results" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -256,7 +265,8 @@
     <div id="scoreCard">
 
         <table id="headTable">
-
+<!--Names and ID explain well, but includes all column options with classes to hide/display based on course selection.
+Each hole number will center map to the hole using the hole() function.-->
             <tr id="holeNum">
                 <td class="rowTitle">Hole:</td>
                 <td id="holeSpot1" class="frontNine pointer" onClick="hole(1)">1</td>
@@ -282,6 +292,7 @@
                 <td id="scoreTotal" class="columnTotal">Total</td>
                 <td id="overUnder">+ / -</td>
             </tr>
+            <!--Only displays if the course has the black (Pro) tee and at least one golfer has selected to use it, also centers map on td click-->
             <tr id="blackTee">
                 <td>Pro:</td>
 
@@ -308,6 +319,7 @@
                 <td id="blackYardTotal" class="columnTotal"></td>
                 <td></td>
             </tr>
+            <!--Only displays if the course has the blue (Champion) tee and at least one golfer has selected to use it, also centers map on td click-->
             <tr id="blueTee">
                 <td>Champion:</td>
                 <td id="blueYard1" class="frontNine pointer" onClick="hole(1)"></td>
@@ -333,6 +345,7 @@
                 <td id="blueYardTotal" class="columnTotal"></td>
                 <td></td>
             </tr>
+            <!--Only displays if the course has the white (Men) tee and at least one golfer has selected to use it, also centers map on td click-->
             <tr id="whiteTee">
                 <td>Men:</td>
                 <td id="whiteYard1" class="frontNine pointer" onClick="hole(1)"></td>
@@ -358,6 +371,7 @@
                 <td id="whiteYardTotal" class="columnTotal"></td>
                 <td></td>
             </tr>
+            <!--Only displays if the course has handicap information, also centers map on td click-->
             <tr id="hcpNum">
                 <td class="sectionTitle">Handicap:</td>
 
@@ -384,6 +398,7 @@
                 <td id="hcpTotal" class="columnTotal"></td>
                 <td id="hcpOverUnder"></td>
             </tr>
+            <!--Pulls par information from JSON, centers map on td click-->
             <tr id="parNum">
                 <td class="sectionTitle">Par:</td>
 
@@ -410,8 +425,10 @@
                 <td id="parTotal" class="columnTotal"></td>
                 <td id="parOverUnder"></td>
             </tr>
+            <!--For all players: click on the name starts the edit function, every time an input loses focus the totals are updated.
+            The totals compare to par and show the Over/Under for only the holes entered.-->
             <tr id="player1">
-                <td id="player1name" onclick="startEditPlayerName(1)">Player 1</td>
+                <td id="player1name" class="pointer" onclick="startEditPlayerName(1)">Player 1</td>
 
                 <td class="frontNine"><input id="play1hole1" type="number" onblur="calcScore(1)"></td>
                 <td class="frontNine"><input id="play1hole2" type="number" onblur="calcScore(1)"></td>
@@ -436,8 +453,10 @@
                 <td id="play1Total" class="columnTotal"></td>
                 <td id="play1OverUnder"></td>
             </tr>
+            <!--For all players: click on the name starts the edit function, every time an input loses focus the totals are updated.
+The totals compare to par and show the Over/Under for only the holes entered.-->
             <tr id="player2">
-                <td id="player2name" onclick="startEditPlayerName(2)">Player 2</td>
+                <td id="player2name" class="pointer" onclick="startEditPlayerName(2)">Player 2</td>
                 <td class="frontNine"><input id="play2hole1" type="number" onblur="calcScore(2)"></td>
                 <td class="frontNine"><input id="play2hole2" type="number" onblur="calcScore(2)"></td>
                 <td class="frontNine"><input id="play2hole3" type="number" onblur="calcScore(2)"></td>
@@ -461,9 +480,10 @@
                 <td id="play2Total" class="columnTotal"></td>
                 <td id="play2OverUnder"></td>
             </tr>
-
+            <!--For all players: click on the name starts the edit function, every time an input loses focus the totals are updated.
+            The totals compare to par and show the Over/Under for only the holes entered.-->
             <tr id="player3">
-                <td id="player3name" onclick="startEditPlayerName(3)">Player 3</td>
+                <td id="player3name" class="pointer" onclick="startEditPlayerName(3)">Player 3</td>
                 <td class="frontNine"><input id="play3hole1" type="number" onblur="calcScore(3)"></td>
                 <td class="frontNine"><input id="play3hole2" type="number" onblur="calcScore(3)"></td>
                 <td class="frontNine"><input id="play3hole3" type="number" onblur="calcScore(3)"></td>
@@ -487,8 +507,10 @@
                 <td id="play3Total" class="columnTotal"></td>
                 <td id="play3OverUnder"></td>
             </tr>
+            <!--For all players: click on the name starts the edit function, every time an input loses focus the totals are updated.
+The totals compare to par and show the Over/Under for only the holes entered.-->
             <tr id="player4">
-                <td id="player4name" onclick="startEditPlayerName(4)">Player 4</td>
+                <td id="player4name" class="pointer" onclick="startEditPlayerName(4)">Player 4</td>
                 <td class="frontNine"><input id="play4hole1" type="number" onblur="calcScore(4)"></td>
                 <td class="frontNine"><input id="play4hole2" type="number" onblur="calcScore(4)"></td>
                 <td class="frontNine"><input id="play4hole3" type="number" onblur="calcScore(4)"></td>
@@ -512,8 +534,10 @@
                 <td id="play4Total" class="columnTotal"></td>
                 <td id="play4OverUnder"></td>
             </tr>
+            <!--For all players: click on the name starts the edit function, every time an input loses focus the totals are updated.
+The totals compare to par and show the Over/Under for only the holes entered.-->
             <tr id="player5">
-                <td id="player5name" onclick="startEditPlayerName(5)">Player 5</td>
+                <td id="player5name" class="pointer" onclick="startEditPlayerName(5)">Player 5</td>
                 <td class="frontNine"><input id="play5hole1" type="number" onblur="calcScore(5)"></td>
                 <td class="frontNine"><input id="play5hole2" type="number" onblur="calcScore(5)"></td>
                 <td class="frontNine"><input id="play5hole3" type="number" onblur="calcScore(5)"></td>
@@ -537,8 +561,10 @@
                 <td id="play5Total" class="columnTotal"></td>
                 <td id="play5OverUnder"></td>
             </tr>
+            <!--For all players: click on the name starts the edit function, every time an input loses focus the totals are updated.
+The totals compare to par and show the Over/Under for only the holes entered.-->
             <tr id="player6">
-                <td id="player6name" onclick="startEditPlayerName(6)">Player 6</td>
+                <td id="player6name" class="pointer" onclick="startEditPlayerName(6)">Player 6</td>
                 <td class="frontNine"><input id="play6hole1" type="number" onblur="calcScore(6)"></td>
                 <td class="frontNine"><input id="play6hole2" type="number" onblur="calcScore(6)"></td>
                 <td class="frontNine"><input id="play6hole3" type="number" onblur="calcScore(6)"></td>
@@ -562,8 +588,10 @@
                 <td id="play6Total" class="columnTotal"></td>
                 <td id="play6OverUnder"></td>
             </tr>
+            <!--For all players: click on the name starts the edit function, every time an input loses focus the totals are updated.
+The totals compare to par and show the Over/Under for only the holes entered.-->
             <tr id="player7">
-                <td id="player7name" onclick="startEditPlayerName(7)">Player 7</td>
+                <td id="player7name" class="pointer" onclick="startEditPlayerName(7)">Player 7</td>
                 <td class="frontNine"><input id="play7hole1" type="number" onblur="calcScore(7)"></td>
                 <td class="frontNine"><input id="play7hole2" type="number" onblur="calcScore(7)"></td>
                 <td class="frontNine"><input id="play7hole3" type="number" onblur="calcScore(7)"></td>
@@ -586,10 +614,11 @@
                 <td id="play7holeB9" class="backNine"></td>
                 <td id="play7Total" class="columnTotal"></td>
                 <td id="play7OverUnder"></td>
-
             </tr>
+            <!--For all players: click on the name starts the edit function, every time an input loses focus the totals are updated.
+The totals compare to par and show the Over/Under for only the holes entered.-->
             <tr id="player8">
-                <td id="player8name" onclick="startEditPlayerName(8)">Player 8</td>
+                <td id="player8name" class="pointer" onclick="startEditPlayerName(8)">Player 8</td>
                 <td class="frontNine"><input id="play8hole1" type="number" onblur="calcScore(8)"></td>
                 <td class="frontNine"><input id="play8hole2" type="number" onblur="calcScore(8)"></td>
                 <td class="frontNine"><input id="play8hole3" type="number" onblur="calcScore(8)"></td>
@@ -613,11 +642,7 @@
                 <td id="play8Total" class="columnTotal"></td>
                 <td id="play8OverUnder"></td>
             </tr>
-
-
-            <!--TODO: ask if front / back / full and add hole numbers for that selection, starting with front 9 if full-->
-
-
+            <!--Only displays if the course has the red (Women) tee and at least one golfer has selected to use it, also centers map on td click-->
             <tr id="redTee">
                 <td>Women:</td>
                 <td id="redYard1" class="frontNine pointer" onClick="hole(1)"></td>
@@ -646,7 +671,7 @@
         </table>
     </div>
 </div>
-
+<!--These should not need much explanation, each runs the function to do or start the process described by the button name-->
 <button class="cardOptions btn btn-success" id="addNewPlayer" onclick="startAddPlayer()">Add Player</button>
 <button class="cardOptions btn btn-danger" id="removeLastPlayer" onclick="removePlayer()">Remove Player</button>
 <button class="cardOptions btn btn-danger" id="resetEverything" onclick="newCourse()">Select New Course</button>
