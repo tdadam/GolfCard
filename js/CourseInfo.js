@@ -467,7 +467,7 @@ function setCourseID() {
     getCourse(setID);
 }
 //Setup the swingbyswing api.
-var clientID = "64f8ab8b-326b-4b4c-9d5f-10b4abf65d9c";
+var clientID = "b0967d81-8cd6-4469-9f41-2aaecb1f08d3";
 var accessToken, model, map;
 var redirectURI = document.URL;
 var authUrl = "https://api.swingbyswing.com/v2/oauth/authorize?scope=read&redirect_uri=" + encodeURI(redirectURI) + "&response_type=token&client_id=" + clientID;
