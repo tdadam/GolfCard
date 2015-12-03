@@ -21,6 +21,7 @@ function hideYardRows() {
     $('#blueTee').css('display', 'none');
     $('#whiteTee').css('display', 'none');
     $('#redTee').css('display', 'none');
+    $('#toggle').css('display', 'none');
 }
 //Runs when the Full option is selected, available after the course is set or the card is reset.
 //Displays the toggle front/back button, displays the Player setup section, disables the Full/Front/Back options.
